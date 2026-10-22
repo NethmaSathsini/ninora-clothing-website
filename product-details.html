@@ -1,0 +1,101 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Product Details | Ninora Clothing</title>
+
+    <link rel="stylesheet" href="/ninora/style.css?v=2">
+</head>
+<body>
+
+    <!-- Navigation Bar -->
+    <header>
+        <nav class="navbar">
+            <div class="logo">NINORA</div>
+
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="products.html">Shop</a></li>
+                <li><a href="login.html">Login</a></li>
+                <li><a href="cart.html">Cart</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Product Details Section -->
+    <main class="product-details-container">
+
+        <a href="products.html" class="back-link">
+            &larr; Back to Products
+        </a>
+
+        <section class="product-details">
+
+            <!-- Product Image -->
+            <div class="product-image">
+                <img
+                    id="detailImage"
+                    src="images/image1.jpg"
+                    alt="Product Image"
+                >
+            </div>
+
+            <!-- Product Information -->
+            <div class="product-info">
+
+                <h1 id="detailName">Elegant Blouse</h1>
+
+                <p class="detail-price" id="detailPrice">
+                    Rs. 2,500
+                </p>
+
+                <p class="detail-description" id="detailDescription">
+                    A stylish and comfortable blouse for everyday wear.
+                </p>
+
+                
+<!-- Size Selection -->
+<div class="product-option">
+    <label for="productSize">Select Size:</label>
+
+    <select id="productSize" required>
+        <option value="">Choose a size</option>
+        <option value="S">Small (S)</option>
+        <option value="M">Medium (M)</option>
+        <option value="L">Large (L)</option>
+        <option value="XL">Extra Large (XL)</option>
+    </select>
+</div>
+
+<!-- Quantity Selection -->
+<div class="product-option">
+    <label for="productQuantity">Quantity:</label>
+
+    <input
+        type="number"
+        id="productQuantity"
+        name="quantity"
+        min="1"
+        value="1"
+        required
+    >
+</div>
+
+<!-- Add to Cart Button -->
+<button type="button" id="addToCartBtn" class="add-cart-btn">
+    Add to Cart
+</button>
+
+
+            </div>
+
+        </section>
+
+    </main>
+
+    <script src="/ninora/script.js?v=2"></script>
+</body>
+</html>

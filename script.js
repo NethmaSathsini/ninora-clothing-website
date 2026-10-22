@@ -36,3 +36,31 @@ if (registerForm) {
         alert("Registration form validated successfully!");
     });
 }
+
+
+/* ==============================
+   Login Form Validation
+============================== */
+
+const loginForm = document.getElementById("loginForm");
+
+if (loginForm) {
+    loginForm.addEventListener("submit", function (event) {
+        event.preventDefault();
+
+        const email = document.getElementById("loginEmail").value.trim();
+        const password = document.getElementById("loginPassword").value;
+
+        if (email === "" || password === "") {
+            alert("Please fill in all fields.");
+            return;
+        }
+
+        if (password.length < 8) {
+            alert("Please enter a valid password.");
+            return;
+        }
+
+        alert("Login form validated successfully!");
+    });
+}

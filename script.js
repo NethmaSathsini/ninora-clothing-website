@@ -64,3 +64,42 @@ if (loginForm) {
         alert("Login form validated successfully!");
     });
 }
+
+
+/*Product Search and Filtering*/
+
+const productSearch = document.getElementById("productSearch");
+const categorySelect = document.getElementById("categorySelect");
+
+if (productSearch && categorySelect) {
+
+    const productCards = document.querySelectorAll(".product-card");
+
+    function filterProducts() {
+
+        const searchText = productSearch.value.toLowerCase().trim();
+        const selectedCategory = categorySelect.value;
+
+        productCards.forEach(function (card) {
+
+            const productName = card.querySelector("h3").textContent.toLowerCase();
+            const productCategory = card.dataset.category;
+
+            const matchesSearch = productName.includes(searchText);
+
+            const matchesCategory =
+                selectedCategory === "all" ||
+                productCategory === selectedCategory;
+
+            if (matchesSearch && matchesCategory) {
+                card.style.display = "";
+            } else {
+                card.style.display = "none";
+            }
+
+        });
+    }
+
+    productSearch.addEventListener("input", filterProducts);
+    categorySelect.addEventListener("change", filterProducts);
+}

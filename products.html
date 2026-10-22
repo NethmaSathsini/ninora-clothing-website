@@ -1,0 +1,123 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Shop Products | Ninora Clothing</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- Navigation Bar -->
+    <header>
+        <nav class="navbar">
+            <div class="logo">NINORA</div>
+
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="products.html">Shop</a></li>
+                <li><a href="login.html">Login</a></li>
+                <li><a href="cart.html">Cart</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Products Section -->
+    <main class="products-container">
+
+        <h1>Our Collection</h1>
+        <p>Explore the latest fashion from Ninora.</p>
+
+        
+<!-- Product Search and Category Filter -->
+<div class="product-controls">
+
+    <div class="search-box">
+        <input
+            type="search"
+            id="productSearch"
+            placeholder="Search for clothing..."
+            aria-label="Search products"
+        >
+    </div>
+
+    <div class="category-filter">
+        <label for="categorySelect">Category:</label>
+
+        <select id="categorySelect">
+            <option value="all">All Categories</option>
+            <option value="blouses">Blouses</option>
+            <option value="dresses">Dresses</option>
+            <option value="tops">Tops</option>
+            <option value="tshirts">T-Shirts</option>
+            <option value="fullkits">Full Kits</option>
+            <option value="officewear">Office Wear</option>
+            <option value="trousers">Trousers</option>
+            <option value="skirts">Skirts</option>
+        </select>
+    </div>
+</div>
+
+<!-- Products Grid -->
+<section class="products-grid" id="productsGrid">
+
+    <!-- Product 1 -->
+    <article class="product-card" data-category="blouses">
+        <img src="images/image1.jpg" alt="Women's Blouse">
+
+        <h3>Elegant Blouse</h3>
+        <p class="product-price">Rs. 2,500</p>
+
+        <a href="product-details.html?id=1" class="view-product-btn">
+            View Details
+        </a>
+    </article>
+
+    <!-- Product 2 -->
+    <article class="product-card" data-category="dresses">
+        <img src="images/image2.jpg" alt="Women's Dress">
+
+        <h3>Casual Dress</h3>
+        <p class="product-price">Rs. 3,800</p>
+
+        <a href="product-details.html?id=2" class="view-product-btn">
+            View Details
+        </a>
+    </article>
+
+    <!-- Product 3 -->
+    <article class="product-card" data-category="tops">
+        <img src="images/image3.jpg" alt="Women's Top">
+
+        <h3>Classic Top</h3>
+        <p class="product-price">Rs. 1,950</p>
+
+        <a href="product-details.html?id=3" class="view-product-btn">
+            View Details
+        </a>
+    </article>
+
+    <!-- Product 4 -->
+    <article class="product-card" data-category="fullkits">
+        <img src="images/image5.jpeg" alt="Women's full-kits">
+
+        <h3>Wide Leg Trousers</h3>
+        <p class="product-price">Rs. 3,200</p>
+
+        <a href="product-details.html?id=4" class="view-product-btn">
+            View Details
+        </a>
+    </article>
+
+</section>
+
+</div>
+
+    </main>
+
+    <script src="script.js"></script>
+</body>
+</html>

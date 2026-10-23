@@ -716,3 +716,239 @@ if (cancelProductBtn && productFormSection && adminProductForm) {
         productFormSection.hidden = true;
     });
 }
+
+
+/* ===================================
+   Admin Product Management
+=================================== */
+
+// Get saved admin products
+function getAdminProducts() {
+    return JSON.parse(
+        localStorage.getItem("ninoraAdminProducts") || "[]"
+    );
+}
+
+// Save admin products
+function saveAdminProducts(products) {
+    localStorage.setItem(
+        "ninoraAdminProducts",
+        JSON.stringify(products)
+    );
+}
+
+// Display products in admin table
+function displayAdminProducts() {
+    const tableBody = document.getElementById(
+        "adminProductsTableBody"
+    );
+
+    if (!tableBody) return;
+
+    const products = getAdminProducts();
+    tableBody.innerHTML = "";
+
+    if (products.length === 0) {
+        const row = document.createElement("tr");
+        const cell = document.createElement("td");
+        cell.colSpan = 5;
+        cell.textContent = "No products added yet.";
+        row.appendChild(cell);
+        tableBody.appendChild(row);
+        return;
+    }
+
+    products.forEach(function (product) {
+        const row = document.createElement("tr");
+
+        const imageCell = document.createElement("td");
+        const image = document.createElement("img");
+        image.src = product.image;
+        image.alt = product.name;
+        image.className = "admin-product-table-image";
+        imageCell.appendChild(image);
+
+        const nameCell = document.createElement("td");
+        nameCell.textContent = product.name;
+
+        const categoryCell = document.createElement("td");
+        categoryCell.textContent = product.category;
+
+        const priceCell = document.createElement("td");
+        priceCell.textContent = Number(product.price).toFixed(2);
+
+        const actionsCell = document.createElement("td");
+
+        const editBtn = document.createElement("button");
+        editBtn.type = "button";
+        editBtn.className = "admin-edit-btn";
+        editBtn.textContent = "Edit";
+        editBtn.addEventListener("click", function () {
+            editAdminProduct(product.id);
+        });
+
+        const deleteBtn = document.createElement("button");
+        deleteBtn.type = "button";
+        deleteBtn.className = "admin-delete-btn";
+        deleteBtn.textContent = "Delete";
+        deleteBtn.addEventListener("click", function () {
+            deleteAdminProduct(product.id);
+        });
+
+        actionsCell.append(editBtn, deleteBtn);
+
+        row.append(
+            imageCell,
+            nameCell,
+            categoryCell,
+            priceCell,
+            actionsCell
+        );
+
+        tableBody.appendChild(row);
+    });
+}
+
+// Add or update product
+const productManagementForm = document.getElementById(
+    "adminProductForm"
+);
+
+if (productManagementForm) {
+    productManagementForm.addEventListener(
+        "submit",
+        function (event) {
+            event.preventDefault();
+
+            const idField = document.getElementById(
+                "editProductId"
+            );
+
+            const name = document.getElementById(
+                "productName"
+            ).value.trim();
+
+            const price = Number(
+                document.getElementById("productPrice").value
+            );
+
+            const category = document.getElementById(
+                "productCategory"
+            ).value;
+
+            const image = document.getElementById(
+                "productImage"
+            ).value.trim();
+
+            if (
+                !name ||
+                !Number.isFinite(price) ||
+                price <= 0 ||
+                !category ||
+                !image
+            ) {
+                alert("Please enter valid product details.");
+                return;
+            }
+
+            const products = getAdminProducts();
+            const editingId = idField.value;
+
+            if (editingId) {
+                const product = products.find(
+                    item => String(item.id) === editingId
+                );
+
+                if (!product) {
+                    alert("Product not found.");
+                    return;
+                }
+
+                product.name = name;
+                product.price = price;
+                product.category = category;
+                product.image = image;
+
+                alert("Product updated successfully!");
+            } else {
+                const newProduct = {
+                    id: "admin-" + Date.now() + "-" +
+                        Math.random().toString(36).slice(2, 8),
+                    name: name,
+                    price: price,
+                    category: category,
+                    image: image
+                };
+
+                products.push(newProduct);
+
+                alert("Product added successfully!");
+            }
+
+            saveAdminProducts(products);
+            displayAdminProducts();
+
+            productManagementForm.reset();
+            idField.value = "";
+
+            document.getElementById(
+                "productFormSection"
+            ).hidden = true;
+        }
+    );
+}
+
+// Edit product
+function editAdminProduct(productId) {
+    const product = getAdminProducts().find(
+        item => item.id === productId
+    );
+
+    if (!product) return;
+
+    document.getElementById("editProductId").value =
+        product.id;
+
+    document.getElementById("productName").value =
+        product.name;
+
+    document.getElementById("productPrice").value =
+        product.price;
+
+    document.getElementById("productCategory").value =
+        product.category;
+
+    document.getElementById("productImage").value =
+        product.image;
+
+    document.getElementById("productFormTitle").textContent =
+        "Edit Product";
+
+    const formSection = document.getElementById(
+        "productFormSection"
+    );
+
+    formSection.hidden = false;
+    formSection.scrollIntoView({ behavior: "smooth" });
+}
+
+// Delete product
+function deleteAdminProduct(productId) {
+    const confirmed = confirm(
+        "Are you sure you want to delete this product?"
+    );
+
+    if (!confirmed) return;
+
+    const products = getAdminProducts().filter(
+        item => item.id !== productId
+    );
+
+    saveAdminProducts(products);
+    displayAdminProducts();
+
+    alert("Product deleted successfully!");
+}
+
+// Load admin products when page opens
+displayAdminProducts();

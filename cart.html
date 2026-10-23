@@ -1,0 +1,96 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Shopping Cart | Ninora Clothing</title>
+
+    <link rel="stylesheet" href="/ninora/style.css?v=7">
+</head>
+<body>
+
+    <!-- Navigation Bar -->
+    <header class="navbar">
+        <a href="index.html" class="logo">NINORA</a>
+
+        <nav class="nav-links">
+            <a href="index.html">Home</a>
+            <a href="products.html">Shop</a>
+            <a href="index.html#categories">Categories</a>
+            <a href="my-orders.html">My Orders</a>
+            <a href="login.html">Login</a>
+            <a href="cart.html">
+                Cart <span id="cart-count">0</span>
+            </a>
+        </nav>
+    </header>
+
+    <main class="cart-container">
+
+        <!-- Page Heading -->
+        <div class="cart-heading">
+            <h1>My Shopping Cart</h1>
+            <p>Review your selected items before checkout.</p>
+        </div>
+
+        <div class="cart-layout">
+
+            <!-- Cart Items -->
+            <section class="cart-items-section">
+                <h2>Shopping Bag</h2>
+
+                <div id="cartItems">
+                    <!-- JavaScript will display cart items here -->
+                </div>
+
+                <p id="emptyCartMessage" hidden>
+                    Your shopping cart is empty.
+                </p>
+
+                <a href="products.html" class="continue-shopping">
+                    &larr; Continue Shopping
+                </a>
+            </section>
+
+            <!-- Order Summary -->
+            <aside class="cart-summary">
+                <h2>Order Summary</h2>
+
+                <div class="summary-row">
+                    <span>Subtotal</span>
+                    <span id="cartSubtotal">Rs. 0</span>
+                </div>
+
+                <div class="summary-row summary-total">
+                    <span>Total</span>
+                    <span id="cartTotal">Rs. 0</span>
+                </div>
+
+                <p class="summary-note">
+                    Delivery charges, if applicable, will be
+                    confirmed during checkout.
+                </p>
+
+                <a href="checkout.html"
+                   id="checkoutBtn"
+                   class="checkout-btn">
+                    Proceed to Checkout
+                </a>
+            </aside>
+
+        </div>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <p>&copy; 2026 Ninora Clothing Brand.</p>
+        <p>Style made simple.</p>
+    </footer>
+
+    <script src="/ninora/script.js?v=4"></script>
+
+</body>
+</html>

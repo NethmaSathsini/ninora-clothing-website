@@ -229,3 +229,142 @@ if (addToCartBtn) {
         alert("Product added to cart successfully!");
     });
 }
+
+
+/* ==============================
+   Shopping Cart Functionality
+============================== */
+
+const cartItemsContainer = document.getElementById("cartItems");
+
+if (cartItemsContainer) {
+    displayCart();
+}
+
+function getCart() {
+    return JSON.parse(localStorage.getItem("ninoraCart")) || [];
+}
+
+function saveCart(cart) {
+    localStorage.setItem("ninoraCart", JSON.stringify(cart));
+}
+
+function displayCart() {
+    const cart = getCart();
+
+    const emptyCartMessage = document.getElementById("emptyCartMessage");
+    const subtotalElement = document.getElementById("cartSubtotal");
+    const totalElement = document.getElementById("cartTotal");
+    const checkoutBtn = document.getElementById("checkoutBtn");
+    const cartCount = document.getElementById("cart-count");
+
+    cartItemsContainer.innerHTML = "";
+
+    // Calculate cart quantity and total
+    let subtotal = 0;
+    let totalQuantity = 0;
+
+    cart.forEach((item, index) => {
+        const quantity = Number(item.quantity);
+        const price = Number(item.price);
+
+        subtotal += price * quantity;
+        totalQuantity += quantity;
+
+        const cartItem = document.createElement("div");
+        cartItem.className = "cart-item";
+
+        cartItem.innerHTML = `
+            <img src="${item.image}" alt="${item.name}">
+
+            <div class="cart-item-details">
+                <h3>${item.name}</h3>
+
+                <p>Size: ${item.size}</p>
+
+                <p class="cart-item-price">
+                    Rs. ${(price * quantity).toLocaleString()}
+                </p>
+
+                <label>
+                    Quantity:
+                    <input
+                        type="number"
+                        class="cart-quantity"
+                        min="1"
+                        value="${quantity}"
+                        data-index="${index}"
+                    >
+                </label>
+
+                <br>
+
+                <button
+                    type="button"
+                    class="remove-cart-btn"
+                    data-index="${index}"
+                >
+                    Remove
+                </button>
+            </div>
+        `;
+
+        cartItemsContainer.appendChild(cartItem);
+    });
+
+    // Update subtotal and total
+    subtotalElement.textContent = `Rs. ${subtotal.toLocaleString()}`;
+    totalElement.textContent = `Rs. ${subtotal.toLocaleString()}`;
+
+    if (cartCount) {
+        cartCount.textContent = totalQuantity;
+    }
+
+    // Empty cart handling
+    if (cart.length === 0) {
+        emptyCartMessage.hidden = false;
+        checkoutBtn.style.pointerEvents = "none";
+        checkoutBtn.style.opacity = "0.5";
+    } else {
+        emptyCartMessage.hidden = true;
+        checkoutBtn.style.pointerEvents = "auto";
+        checkoutBtn.style.opacity = "1";
+    }
+}
+
+// Handle quantity changes and remove buttons
+if (cartItemsContainer) {
+
+    cartItemsContainer.addEventListener("change", function(event) {
+        if (event.target.classList.contains("cart-quantity")) {
+
+            const index = Number(event.target.dataset.index);
+            const quantity = Number(event.target.value);
+
+            if (!Number.isInteger(quantity) || quantity < 1) {
+                alert("Please enter a valid quantity.");
+                displayCart();
+                return;
+            }
+
+            const cart = getCart();
+            cart[index].quantity = quantity;
+
+            saveCart(cart);
+            displayCart();
+        }
+    });
+
+    cartItemsContainer.addEventListener("click", function(event) {
+        if (event.target.classList.contains("remove-cart-btn")) {
+
+            const index = Number(event.target.dataset.index);
+            const cart = getCart();
+
+            cart.splice(index, 1);
+
+            saveCart(cart);
+            displayCart();
+        }
+    });
+}

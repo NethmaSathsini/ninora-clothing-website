@@ -1,0 +1,152 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Checkout | Ninora Clothing</title>
+
+    <link rel="stylesheet" href="/ninora/style.css?v=8">
+</head>
+<body>
+
+    <!-- Navigation Bar -->
+    <header class="navbar">
+        <a href="index.html" class="logo">NINORA</a>
+
+        <nav class="nav-links">
+            <a href="index.html">Home</a>
+            <a href="products.html">Shop</a>
+            <a href="index.html#categories">Categories</a>
+            <a href="my-orders.html">My Orders</a>
+            <a href="login.html">Login</a>
+            <a href="cart.html">
+                Cart <span id="cart-count">0</span>
+            </a>
+        </nav>
+    </header>
+
+    <main class="checkout-container">
+
+        <div class="checkout-heading">
+            <h1>Checkout</h1>
+            <p>Complete your details to place your order.</p>
+        </div>
+
+        <div class="checkout-layout">
+
+            <!-- Checkout Form -->
+            <section class="checkout-form-section">
+
+                <form id="checkoutForm">
+
+                    <!-- Delivery Information -->
+                    <div class="checkout-box">
+                        <h2>1. Delivery Information</h2>
+
+                        <div class="checkout-field">
+                            <label for="customerName">Full Name</label>
+                            <input
+                                type="text"
+                                id="customerName"
+                                name="customerName"
+                                placeholder="Enter your full name"
+                                required
+                            >
+                        </div>
+
+                        <div class="checkout-field">
+                            <label for="customerPhone">Phone Number</label>
+                            <input
+                                type="tel"
+                                id="customerPhone"
+                                name="customerPhone"
+                                placeholder="Enter your phone number"
+                                required
+                            >
+                        </div>
+
+                        <div class="checkout-field">
+                            <label for="deliveryAddress">Delivery Address</label>
+                            <textarea
+                                id="deliveryAddress"
+                                name="deliveryAddress"
+                                rows="4"
+                                placeholder="Enter your delivery address"
+                                required
+                            ></textarea>
+                        </div>
+                    </div>
+
+                    <!-- Payment Method -->
+                    <div class="checkout-box">
+                        <h2>2. Payment Method</h2>
+
+                        <label class="payment-option">
+                            <input
+                                type="radio"
+                                name="paymentMethod"
+                                value="Cash on Delivery"
+                                required
+                            >
+                            Cash on Delivery
+                        </label>
+
+                        <label class="payment-option">
+                            <input
+                                type="radio"
+                                name="paymentMethod"
+                                value="Bank Transfer"
+                            >
+                            Bank Transfer
+                        </label>
+
+                        <p class="payment-note">
+                            Bank transfer payments will be verified
+                            manually by Ninora Clothing.
+                        </p>
+                    </div>
+
+                    <button type="submit" class="place-order-btn">
+                        Place Order
+                    </button>
+
+                </form>
+
+            </section>
+
+            <!-- Order Summary -->
+            <aside class="checkout-summary">
+
+                <h2>3. Order Summary</h2>
+
+                <div id="checkoutItems">
+                    <!-- Cart products will appear here -->
+                </div>
+
+                <div class="summary-row summary-total">
+                    <span>Total</span>
+                    <span id="checkoutTotal">Rs. 0</span>
+                </div>
+
+                <p class="summary-note">
+                    Delivery charges, if applicable, will be
+                    confirmed separately.
+                </p>
+
+            </aside>
+
+        </div>
+
+    </main>
+
+    <footer class="footer">
+        <p>&copy; 2026 Ninora Clothing Brand.</p>
+        <p>Style made simple.</p>
+    </footer>
+
+    <script src="/ninora/script.js?v=6"></script>
+
+</body>
+</html>

@@ -368,3 +368,142 @@ if (cartItemsContainer) {
         }
     });
 }
+
+
+/* ==============================
+   Checkout Order Summary
+============================== */
+
+const checkoutItemsContainer = document.getElementById("checkoutItems");
+
+if (checkoutItemsContainer) {
+    displayCheckoutSummary();
+}
+
+function displayCheckoutSummary() {
+    const cart = JSON.parse(localStorage.getItem("ninoraCart")) || [];
+
+    const checkoutTotal = document.getElementById("checkoutTotal");
+    const placeOrderBtn = document.querySelector(".place-order-btn");
+
+    checkoutItemsContainer.innerHTML = "";
+
+    let total = 0;
+
+    // Display each product
+    cart.forEach((item) => {
+        const price = Number(item.price);
+        const quantity = Number(item.quantity);
+        const itemTotal = price * quantity;
+
+        total += itemTotal;
+
+        const checkoutItem = document.createElement("div");
+        checkoutItem.className = "checkout-item";
+
+        const itemDetails = document.createElement("div");
+
+        const itemName = document.createElement("p");
+        itemName.textContent = `${item.name} (Size: ${item.size})`;
+
+        const itemQuantity = document.createElement("p");
+        itemQuantity.textContent = `Quantity: ${quantity}`;
+
+        const itemPrice = document.createElement("p");
+        itemPrice.className = "checkout-item-price";
+        itemPrice.textContent = `Rs. ${itemTotal.toLocaleString()}`;
+
+        itemDetails.appendChild(itemName);
+        itemDetails.appendChild(itemQuantity);
+
+        checkoutItem.appendChild(itemDetails);
+        checkoutItem.appendChild(itemPrice);
+
+        checkoutItemsContainer.appendChild(checkoutItem);
+    });
+
+    // Display total
+    checkoutTotal.textContent = `Rs. ${total.toLocaleString()}`;
+
+    // Disable order button when cart is empty
+    if (cart.length === 0) {
+        const emptyMessage = document.createElement("p");
+        emptyMessage.textContent = "Your shopping cart is empty.";
+
+        checkoutItemsContainer.appendChild(emptyMessage);
+        placeOrderBtn.disabled = true;
+        placeOrderBtn.style.opacity = "0.5";
+    } else {
+        placeOrderBtn.disabled = false;
+        placeOrderBtn.style.opacity = "1";
+    }
+}
+
+
+/* ==============================
+   Place Order Functionality
+============================== */
+
+const checkoutForm = document.getElementById("checkoutForm");
+
+if (checkoutForm) {
+    checkoutForm.addEventListener("submit", function(event) {
+        event.preventDefault();
+
+        // Get cart products
+        const cart = JSON.parse(localStorage.getItem("ninoraCart")) || [];
+
+        if (cart.length === 0) {
+            alert("Your shopping cart is empty.");
+            return;
+        }
+
+        // Get customer details
+        const customerName = document.getElementById("customerName").value.trim();
+        const customerPhone = document.getElementById("customerPhone").value.trim();
+        const deliveryAddress = document.getElementById("deliveryAddress").value.trim();
+
+        const paymentMethod = document.querySelector(
+            'input[name="paymentMethod"]:checked'
+        );
+
+        if (!customerName || !customerPhone || !deliveryAddress || !paymentMethod) {
+            alert("Please complete all required fields.");
+            return;
+        }
+
+        // Calculate order total
+        const total = cart.reduce((sum, item) => {
+            return sum + Number(item.price) * Number(item.quantity);
+        }, 0);
+
+        // Create order
+        const order = {
+            orderId: "NIN" + Date.now(),
+            customerName: customerName,
+            customerPhone: customerPhone,
+            deliveryAddress: deliveryAddress,
+            paymentMethod: paymentMethod.value,
+            items: cart,
+            total: total,
+            status: "Pending",
+            orderDate: new Date().toISOString()
+        };
+
+        // Save order for frontend testing
+        const orders = JSON.parse(localStorage.getItem("ninoraOrders")) || [];
+
+        orders.push(order);
+
+        localStorage.setItem("ninoraOrders", JSON.stringify(orders));
+
+        // Clear shopping cart
+        localStorage.removeItem("ninoraCart");
+
+        // Save latest order ID
+        localStorage.setItem("ninoraLatestOrderId", order.orderId);
+
+        // Go to confirmation page
+        window.location.href = "order-confirmation.html";
+    });
+}

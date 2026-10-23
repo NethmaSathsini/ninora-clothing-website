@@ -1431,3 +1431,205 @@ a {
         box-sizing: border-box;
     }
 }
+
+
+/* ==============================
+   My Orders Page Styling
+============================== */
+
+.orders-container {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 60px 20px;
+    min-height: 75vh;
+}
+
+/* Page Heading */
+.orders-heading {
+    text-align: center;
+    margin-bottom: 45px;
+}
+
+.orders-heading h1 {
+    font-family: Georgia, serif;
+    font-size: 38px;
+    color: #800020;
+    margin-bottom: 12px;
+}
+
+.orders-heading p {
+    color: #777777;
+    font-size: 16px;
+}
+
+/* Orders Section */
+.orders-section {
+    background-color: #ffffff;
+    border: 1px solid #f0e0e4;
+    border-radius: 12px;
+    padding: 30px;
+}
+
+.orders-section-header {
+    margin-bottom: 25px;
+}
+
+.orders-section-header h2 {
+    font-size: 23px;
+    color: #333333;
+}
+
+/* Individual Order Card */
+.order-card {
+    border: 1px solid #ead7dc;
+    border-radius: 10px;
+    padding: 25px;
+    margin-bottom: 20px;
+    background-color: #fffafb;
+}
+
+.order-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.order-card-header h3 {
+    font-size: 18px;
+    color: #800020;
+    overflow-wrap: anywhere;
+}
+
+.order-date {
+    color: #777777;
+    font-size: 13px;
+}
+
+/* Order Information */
+.order-info {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.order-info p {
+    font-size: 14px;
+    color: #555555;
+}
+
+.order-info strong {
+    color: #333333;
+}
+
+/* Order Status */
+.order-status {
+    display: inline-block;
+    padding: 7px 14px;
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.order-status.pending {
+    background-color: #fff3cd;
+    color: #856404;
+}
+
+.order-status.processing {
+    background-color: #dbeafe;
+    color: #1d4ed8;
+}
+
+.order-status.shipped {
+    background-color: #e0e7ff;
+    color: #4338ca;
+}
+
+.order-status.delivered {
+    background-color: #dcfce7;
+    color: #166534;
+}
+
+.order-status.cancelled {
+    background-color: #fee2e2;
+    color: #991b1b;
+}
+
+/* Ordered Products */
+.order-products {
+    border-top: 1px solid #ead7dc;
+    padding-top: 15px;
+}
+
+.order-products h4 {
+    font-size: 15px;
+    color: #333333;
+    margin-bottom: 12px;
+}
+
+.order-product {
+    display: flex;
+    justify-content: space-between;
+    gap: 15px;
+    margin-bottom: 10px;
+    font-size: 14px;
+    color: #666666;
+}
+
+/* Empty Orders */
+#noOrdersMessage {
+    text-align: center;
+    padding: 50px 15px;
+}
+
+#noOrdersMessage h3 {
+    font-size: 22px;
+    color: #800020;
+    margin-bottom: 12px;
+}
+
+#noOrdersMessage p {
+    color: #777777;
+    margin-bottom: 25px;
+}
+
+.shop-now-btn {
+    display: inline-block;
+    background-color: #800020;
+    color: #ffffff;
+    padding: 13px 25px;
+    border-radius: 6px;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.shop-now-btn:hover {
+    background-color: #600018;
+}
+
+/* Responsive Design */
+@media (max-width: 600px) {
+    .orders-heading h1 {
+        font-size: 30px;
+    }
+
+    .orders-section {
+        padding: 20px;
+    }
+
+    .order-card {
+        padding: 18px;
+    }
+
+    .order-card-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .order-info {
+        grid-template-columns: 1fr;
+    }
+}

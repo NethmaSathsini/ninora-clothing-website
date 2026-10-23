@@ -1,0 +1,69 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>My Orders | Ninora Clothing</title>
+
+    <link rel="stylesheet" href="/ninora/style.css?v=10">
+</head>
+<body>
+
+    <!-- Navigation Bar -->
+    <header class="navbar">
+        <a href="index.html" class="logo">NINORA</a>
+
+        <nav class="nav-links">
+            <a href="index.html">Home</a>
+            <a href="products.html">Shop</a>
+            <a href="index.html#categories">Categories</a>
+            <a href="my-orders.html">My Orders</a>
+            <a href="login.html">Login</a>
+            <a href="cart.html">Cart</a>
+        </nav>
+    </header>
+
+    <main class="orders-container">
+
+        <!-- Page Heading -->
+        <div class="orders-heading">
+            <h1>My Orders</h1>
+            <p>View your order history and track your order status.</p>
+        </div>
+
+        <!-- Orders List -->
+        <section class="orders-section">
+
+            <div class="orders-section-header">
+                <h2>Order History</h2>
+            </div>
+
+            <!-- JavaScript will display orders here -->
+            <div id="ordersList"></div>
+
+            <!-- Empty Orders Message -->
+            <div id="noOrdersMessage" hidden>
+                <h3>No Orders Yet</h3>
+                <p>You haven't placed any orders yet.</p>
+
+                <a href="products.html" class="shop-now-btn">
+                    Start Shopping
+                </a>
+            </div>
+
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <p>&copy; 2026 Ninora Clothing Brand.</p>
+        <p>Style made simple.</p>
+    </footer>
+
+    <script src="/ninora/script.js?v=8"></script>
+
+</body>
+</html>

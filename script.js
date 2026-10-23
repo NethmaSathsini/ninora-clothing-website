@@ -561,3 +561,114 @@ function displayOrderConfirmation() {
     document.getElementById("confirmOrderTotal").textContent =
         "Rs. " + Number(order.total).toLocaleString();
 }
+
+
+/* ==============================
+   My Orders Page Functionality
+============================== */
+
+const ordersList = document.getElementById("ordersList");
+
+if (ordersList) {
+    displayMyOrders();
+}
+
+function displayMyOrders() {
+    const orders = JSON.parse(
+        localStorage.getItem("ninoraOrders")
+    ) || [];
+
+    const noOrdersMessage = document.getElementById("noOrdersMessage");
+
+    ordersList.innerHTML = "";
+
+    // Show empty message when there are no orders
+    if (orders.length === 0) {
+        noOrdersMessage.hidden = false;
+        return;
+    }
+
+    noOrdersMessage.hidden = true;
+
+    // Display newest orders first
+    const sortedOrders = [...orders].reverse();
+
+    sortedOrders.forEach((order) => {
+        const orderCard = document.createElement("div");
+        orderCard.className = "order-card";
+
+        // Order header
+        const header = document.createElement("div");
+        header.className = "order-card-header";
+
+        const orderId = document.createElement("h3");
+        orderId.textContent = `Order #${order.orderId}`;
+
+        const orderDate = document.createElement("span");
+        orderDate.className = "order-date";
+        orderDate.textContent = new Date(order.orderDate)
+            .toLocaleDateString("en-GB");
+
+        header.appendChild(orderId);
+        header.appendChild(orderDate);
+
+        // Order information
+        const info = document.createElement("div");
+        info.className = "order-info";
+
+        const total = document.createElement("p");
+        total.textContent = `Total: Rs. ${Number(order.total).toLocaleString()}`;
+
+        const payment = document.createElement("p");
+        payment.textContent = `Payment: ${order.paymentMethod}`;
+
+        const statusWrapper = document.createElement("p");
+        statusWrapper.textContent = "Status: ";
+
+        const status = document.createElement("span");
+        status.className = "order-status";
+
+        const statusName = String(order.status || "Pending");
+        status.classList.add(statusName.toLowerCase());
+        status.textContent = statusName;
+
+        statusWrapper.appendChild(status);
+
+        info.appendChild(total);
+        info.appendChild(payment);
+        info.appendChild(statusWrapper);
+
+        // Ordered products
+        const productsSection = document.createElement("div");
+        productsSection.className = "order-products";
+
+        const productsHeading = document.createElement("h4");
+        productsHeading.textContent = "Ordered Products";
+
+        productsSection.appendChild(productsHeading);
+
+        order.items.forEach((item) => {
+            const productRow = document.createElement("div");
+            productRow.className = "order-product";
+
+            const productName = document.createElement("span");
+            productName.textContent =
+                `${item.name} (Size: ${item.size}) × ${item.quantity}`;
+
+            const productPrice = document.createElement("span");
+            productPrice.textContent =
+                `Rs. ${(Number(item.price) * Number(item.quantity)).toLocaleString()}`;
+
+            productRow.appendChild(productName);
+            productRow.appendChild(productPrice);
+
+            productsSection.appendChild(productRow);
+        });
+
+        orderCard.appendChild(header);
+        orderCard.appendChild(info);
+        orderCard.appendChild(productsSection);
+
+        ordersList.appendChild(orderCard);
+    });
+}

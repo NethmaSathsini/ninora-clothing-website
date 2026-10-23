@@ -672,3 +672,47 @@ function displayMyOrders() {
         ordersList.appendChild(orderCard);
     });
 }
+
+
+/* ==============================
+   Admin Product Form Open / Close
+============================== */
+
+const addProductBtn = document.getElementById("addProductBtn");
+const cancelProductBtn = document.getElementById("cancelProductBtn");
+const productFormSection = document.getElementById("productFormSection");
+const adminProductForm = document.getElementById("adminProductForm");
+const productFormTitle = document.getElementById("productFormTitle");
+const editProductId = document.getElementById("editProductId");
+
+// Open Add Product Form
+if (addProductBtn && productFormSection && adminProductForm) {
+    addProductBtn.addEventListener("click", function () {
+
+        adminProductForm.reset();
+
+        if (editProductId) {
+            editProductId.value = "";
+        }
+
+        if (productFormTitle) {
+            productFormTitle.textContent = "Add New Product";
+        }
+
+        productFormSection.hidden = false;
+    });
+}
+
+// Close Product Form
+if (cancelProductBtn && productFormSection && adminProductForm) {
+    cancelProductBtn.addEventListener("click", function () {
+
+        adminProductForm.reset();
+
+        if (editProductId) {
+            editProductId.value = "";
+        }
+
+        productFormSection.hidden = true;
+    });
+}

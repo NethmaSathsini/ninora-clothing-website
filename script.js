@@ -952,3 +952,299 @@ function deleteAdminProduct(productId) {
 
 // Load admin products when page opens
 displayAdminProducts();
+
+
+/* ======================================
+   Admin Manage Orders Functionality
+====================================== */
+
+// Get customer orders from localStorage
+function getAdminOrders() {
+    try {
+        return JSON.parse(
+            localStorage.getItem("ninoraOrders") || "[]"
+        );
+    } catch (error) {
+        console.error("Error reading orders:", error);
+        return [];
+    }
+}
+
+// Save updated orders
+function saveAdminOrders(orders) {
+    localStorage.setItem(
+        "ninoraOrders",
+        JSON.stringify(orders)
+    );
+}
+
+// Format order date
+function formatAdminOrderDate(dateValue) {
+    const date = new Date(dateValue);
+
+    if (isNaN(date.getTime())) {
+        return "N/A";
+    }
+
+    return date.toLocaleDateString("en-GB");
+}
+
+// Display customer orders in admin table
+function displayAdminOrders() {
+    const tableBody = document.getElementById(
+        "adminOrdersTableBody"
+    );
+
+    if (!tableBody) return;
+
+    const orders = getAdminOrders().reverse();
+
+    tableBody.innerHTML = "";
+
+    if (orders.length === 0) {
+        const row = document.createElement("tr");
+        const cell = document.createElement("td");
+
+        cell.colSpan = 7;
+        cell.textContent = "No customer orders found.";
+
+        row.appendChild(cell);
+        tableBody.appendChild(row);
+        return;
+    }
+
+    orders.forEach(function (order) {
+        const row = document.createElement("tr");
+
+        function addCell(value) {
+            const cell = document.createElement("td");
+            cell.textContent = value;
+            row.appendChild(cell);
+            return cell;
+        }
+
+        addCell(order.orderId);
+        addCell(order.customerName);
+        addCell(formatAdminOrderDate(order.orderDate));
+
+        addCell(
+            Number(order.total).toFixed(2)
+        );
+
+        addCell(order.paymentMethod);
+
+        // Order status
+        const statusCell = document.createElement("td");
+        const statusBadge = document.createElement("span");
+
+        const status = order.status || "Pending";
+
+        statusBadge.className =
+            "admin-order-status " + status.toLowerCase();
+
+        statusBadge.textContent = status;
+
+        statusCell.appendChild(statusBadge);
+        row.appendChild(statusCell);
+
+        // View Details button
+        const actionsCell = document.createElement("td");
+
+        const viewBtn = document.createElement("button");
+        viewBtn.type = "button";
+        viewBtn.className = "admin-view-order-btn";
+        viewBtn.textContent = "View Details";
+
+        viewBtn.addEventListener("click", function () {
+            viewAdminOrderDetails(order.orderId);
+        });
+
+        actionsCell.appendChild(viewBtn);
+        row.appendChild(actionsCell);
+
+        tableBody.appendChild(row);
+    });
+}
+
+// Display selected order details
+function viewAdminOrderDetails(orderId) {
+    const order = getAdminOrders().find(
+        item => item.orderId === orderId
+    );
+
+    if (!order) {
+        alert("Order not found.");
+        return;
+    }
+
+    const detailsSection = document.getElementById(
+        "adminOrderDetailsSection"
+    );
+
+    const detailsContent = document.getElementById(
+        "adminOrderDetailsContent"
+    );
+
+    if (!detailsSection || !detailsContent) return;
+
+    detailsContent.innerHTML = "";
+
+    // Customer and order information
+    const info = document.createElement("div");
+    info.className = "admin-order-info";
+
+    const information = [
+        ["Order ID", order.orderId],
+        ["Customer Name", order.customerName],
+        ["Phone Number", order.customerPhone],
+        ["Delivery Address", order.deliveryAddress],
+        ["Order Date", formatAdminOrderDate(order.orderDate)],
+        ["Payment Method", order.paymentMethod],
+        ["Order Status", order.status || "Pending"],
+        ["Total (LKR)", Number(order.total).toFixed(2)]
+    ];
+
+    information.forEach(function ([label, value]) {
+        const paragraph = document.createElement("p");
+
+        const strong = document.createElement("strong");
+        strong.textContent = label + ": ";
+
+        paragraph.appendChild(strong);
+        paragraph.appendChild(
+            document.createTextNode(String(value ?? "N/A"))
+        );
+
+        info.appendChild(paragraph);
+    });
+
+    detailsContent.appendChild(info);
+
+    // Ordered products
+    const productsSection = document.createElement("div");
+    productsSection.className = "admin-order-products";
+
+    const productsHeading = document.createElement("h3");
+    productsHeading.textContent = "Ordered Products";
+
+    productsSection.appendChild(productsHeading);
+
+    (order.items || []).forEach(function (item) {
+        const productRow = document.createElement("div");
+        productRow.className = "admin-order-product-item";
+
+        productRow.textContent =
+            item.name +
+            " | Size: " + (item.size || "N/A") +
+            " | Quantity: " + item.quantity +
+            " | LKR " +
+            (Number(item.price) * Number(item.quantity)).toFixed(2);
+
+        productsSection.appendChild(productRow);
+    });
+
+    detailsContent.appendChild(productsSection);
+
+    // Update order status
+    const updateSection = document.createElement("div");
+    updateSection.className = "admin-update-status";
+
+    const label = document.createElement("label");
+    label.textContent = "Update Order Status";
+
+    const statusSelect = document.createElement("select");
+
+    const statuses = [
+        "Pending",
+        "Processing",
+        "Dispatched",
+        "Delivered",
+        "Cancelled"
+    ];
+
+    statuses.forEach(function (status) {
+        const option = document.createElement("option");
+
+        option.value = status;
+        option.textContent = status;
+
+        statusSelect.appendChild(option);
+    });
+
+    statusSelect.value = order.status || "Pending";
+
+    const updateBtn = document.createElement("button");
+    updateBtn.type = "button";
+    updateBtn.textContent = "Update Status";
+
+    updateBtn.addEventListener("click", function () {
+        updateAdminOrderStatus(
+            order.orderId,
+            statusSelect.value
+        );
+    });
+
+    updateSection.appendChild(label);
+    updateSection.appendChild(statusSelect);
+    updateSection.appendChild(updateBtn);
+
+    detailsContent.appendChild(updateSection);
+
+    detailsSection.hidden = false;
+
+    detailsSection.scrollIntoView({
+        behavior: "smooth"
+    });
+}
+
+// Update order status in localStorage
+function updateAdminOrderStatus(orderId, newStatus) {
+    const orders = getAdminOrders();
+
+    const order = orders.find(
+        item => item.orderId === orderId
+    );
+
+    if (!order) {
+        alert("Order not found.");
+        return;
+    }
+
+    const allowedStatuses = [
+        "Pending",
+        "Processing",
+        "Dispatched",
+        "Delivered",
+        "Cancelled"
+    ];
+
+    if (!allowedStatuses.includes(newStatus)) {
+        alert("Invalid order status.");
+        return;
+    }
+
+    order.status = newStatus;
+
+    saveAdminOrders(orders);
+
+    displayAdminOrders();
+    viewAdminOrderDetails(orderId);
+
+    alert("Order status updated successfully!");
+}
+
+// Close order details section
+const closeOrderDetailsBtn = document.getElementById(
+    "closeOrderDetailsBtn"
+);
+
+if (closeOrderDetailsBtn) {
+    closeOrderDetailsBtn.addEventListener("click", function () {
+        document.getElementById(
+            "adminOrderDetailsSection"
+        ).hidden = true;
+    });
+}
+
+// Load customer orders when admin page opens
+displayAdminOrders();

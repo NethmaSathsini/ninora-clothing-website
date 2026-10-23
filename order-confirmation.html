@@ -1,0 +1,101 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Order Confirmation | Ninora Clothing</title>
+
+    <link rel="stylesheet" href="/ninora/style.css?v=9">
+</head>
+<body>
+
+    <!-- Navigation Bar -->
+    <header class="navbar">
+        <a href="index.html" class="logo">NINORA</a>
+
+        <nav class="nav-links">
+            <a href="index.html">Home</a>
+            <a href="products.html">Shop</a>
+            <a href="index.html#categories">Categories</a>
+            <a href="my-orders.html">My Orders</a>
+            <a href="login.html">Login</a>
+            <a href="cart.html">
+                Cart <span id="cart-count">0</span>
+            </a>
+        </nav>
+    </header>
+
+    <main class="confirmation-container">
+
+        <section class="confirmation-card">
+
+            <div class="confirmation-icon">
+                &#10003;
+            </div>
+
+            <h1>Thank You for Your Order!</h1>
+
+            <p class="confirmation-message">
+                Your order has been placed successfully.
+            </p>
+
+            <div class="confirmation-details">
+
+                <h2>Order Details</h2>
+
+                <div class="confirmation-row">
+                    <span>Order ID</span>
+                    <strong id="confirmOrderId">-</strong>
+                </div>
+
+                <div class="confirmation-row">
+                    <span>Order Date</span>
+                    <strong id="confirmOrderDate">-</strong>
+                </div>
+
+                <div class="confirmation-row">
+                    <span>Payment Method</span>
+                    <strong id="confirmPaymentMethod">-</strong>
+                </div>
+
+                <div class="confirmation-row">
+                    <span>Order Status</span>
+                    <strong id="confirmOrderStatus">-</strong>
+                </div>
+
+                <div class="confirmation-row confirmation-total">
+                    <span>Total Amount</span>
+                    <strong id="confirmOrderTotal">Rs. 0</strong>
+                </div>
+
+            </div>
+
+            <p class="confirmation-note">
+                Thank you for shopping with Ninora Clothing.
+            </p>
+
+            <div class="confirmation-actions">
+                <a href="products.html" class="continue-shopping-btn">
+                    Continue Shopping
+                </a>
+
+                <a href="my-orders.html" class="view-orders-btn">
+                    View My Orders
+                </a>
+            </div>
+
+        </section>
+
+    </main>
+
+    <footer class="footer">
+        <p>&copy; 2026 Ninora Clothing Brand.</p>
+        <p>Style made simple.</p>
+    </footer>
+
+    <script src="/ninora/script.js?v=7"></script>
+
+</body>
+</html>

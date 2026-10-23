@@ -507,3 +507,57 @@ if (checkoutForm) {
         window.location.href = "order-confirmation.html";
     });
 }
+
+
+/* ==============================
+   Order Confirmation Functionality
+============================== */
+
+const confirmOrderId = document.getElementById("confirmOrderId");
+
+if (confirmOrderId) {
+    displayOrderConfirmation();
+}
+
+function displayOrderConfirmation() {
+
+    const latestOrderId = localStorage.getItem("ninoraLatestOrderId");
+
+    const orders = JSON.parse(
+        localStorage.getItem("ninoraOrders")
+    ) || [];
+
+    // Find the latest order
+    const order = orders.find(
+        item => item.orderId === latestOrderId
+    );
+
+    if (!order) {
+        document.querySelector(".confirmation-card h1").textContent =
+            "Order Not Found";
+
+        document.querySelector(".confirmation-message").textContent =
+            "No order details are available.";
+
+        document.querySelector(".confirmation-icon").style.display = "none";
+        document.querySelector(".confirmation-details").style.display = "none";
+
+        return;
+    }
+
+    // Display order details
+    document.getElementById("confirmOrderId").textContent =
+        order.orderId;
+
+    document.getElementById("confirmOrderDate").textContent =
+        new Date(order.orderDate).toLocaleDateString("en-GB");
+
+    document.getElementById("confirmPaymentMethod").textContent =
+        order.paymentMethod;
+
+    document.getElementById("confirmOrderStatus").textContent =
+        order.status;
+
+    document.getElementById("confirmOrderTotal").textContent =
+        "Rs. " + Number(order.total).toLocaleString();
+}

@@ -63,8 +63,6 @@ if (loginForm) {
     });
 }
 
-
-
 /* Product Search and Filtering */
 
 const productSearch = document.getElementById("productSearch");
@@ -75,6 +73,8 @@ if (productSearch && categorySelect) {
     function filterProducts() {
 
         const productCards = document.querySelectorAll(".product-card");
+        const noProductsMessage = document.getElementById("noProductsMessage");
+let visibleProducts = 0;
 
         const searchText = productSearch.value.toLowerCase().trim();
         const selectedCategory = categorySelect.value;
@@ -91,8 +91,9 @@ if (productSearch && categorySelect) {
                 selectedCategory === "all" ||
                 productCategory === selectedCategory;
 
-            if (matchesSearch && matchesCategory) {
+           if (matchesSearch && matchesCategory) {
                 card.style.display = "";
+            visibleProducts++;
             } else {
                 card.style.display = "none";
             }
@@ -104,11 +105,28 @@ if (productSearch && categorySelect) {
 
     categorySelect.addEventListener("change", filterProducts);
 
-    // Allows newly added products to be filtered
-    window.filterNinoraProducts = filterProducts;
+    // Get selected category from Home Page URL
+const urlParams = new URLSearchParams(window.location.search);
+const categoryFromURL = urlParams.get("category");
+
+if (categoryFromURL) {
+    categorySelect.value = categoryFromURL;
+    filterProducts();
 }
 
+    // Allows newly added products to be filtered
+    window.filterNinoraProducts = filterProducts;
 
+    // Apply category filter after the page has fully loaded
+window.addEventListener("load", function () {
+    const category = new URLSearchParams(window.location.search).get("category");
+
+    if (category) {
+        categorySelect.value = category;
+        filterProducts();
+    }
+});
+}
 
 /*Dynamic Product Details*/
 

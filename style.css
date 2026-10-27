@@ -52,6 +52,76 @@ a {
     color: #a65c77;
 }
 
+
+/* =====================================
+   NINORA - Professional Customer Navbar
+===================================== */
+
+header.navbar {
+    width: 100%;
+    min-height: 82px;
+    padding: 18px 6%;
+    background: #faf7f5;
+    border-bottom: 1px solid #eadfda;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 25px;
+    box-sizing: border-box;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    box-shadow: 0 3px 15px rgba(50, 35, 30, 0.04);
+}
+
+header.navbar .logo {
+    font-family: Georgia, serif;
+    font-size: 30px;
+    font-weight: bold;
+    letter-spacing: 5px;
+    color: #292524;
+    text-decoration: none;
+    flex-shrink: 0;
+}
+
+header.navbar .nav-links {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    flex-wrap: wrap;
+    gap: 28px;
+}
+
+header.navbar .nav-links a {
+    color: #574b47;
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 500;
+    transition: color 0.2s ease;
+}
+
+header.navbar .nav-links a:hover,
+header.navbar .nav-links a.active {
+    color: #a47c74;
+}
+
+@media (max-width: 768px) {
+    header.navbar {
+        flex-direction: column;
+        padding: 18px;
+        gap: 16px;
+    }
+
+    header.navbar .nav-links {
+        justify-content: center;
+        gap: 14px 20px;
+    }
+
+    header.navbar .nav-links a {
+        font-size: 13px;
+    }
+}
+
 /* Hero section */
 .hero {
     display: flex;
@@ -167,13 +237,28 @@ a {
     font-weight: 600;
 }
 
-/* Footer */
+
+/* NINORA - Premium Footer */
+
 .footer {
-    padding: 22px 6%;
-    background-color: #f7eff1;
+    padding: 30px 6%;
+    background: #e8d8d4;
+    border-top: 1px solid #dfccc6;
     text-align: center;
-    color: #706568;
+    color: #574b47;
     font-size: 13px;
+    line-height: 1.8;
+}
+
+.footer a {
+    color: #75554f;
+    text-decoration: none;
+    transition: color 0.2s ease;
+}
+
+.footer a:hover {
+    color: #292524;
+    text-decoration: underline;
 }
 
 /* Tablet and mobile layouts */
@@ -214,160 +299,258 @@ a {
 }
 
 
-
-/*Registration Page */
+/* =====================================
+   NINORA - Premium Registration Page
+===================================== */
 
 .register-container {
-    min-height: 100vh;
+    min-height: calc(100vh - 82px);
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: #fff5f7;
-    padding: 40px 20px;
+    background: #fdfbf9;
+    padding: 65px 20px;
+    box-sizing: border-box;
 }
 
+/* Registration Card */
 .register-box {
-    background-color: #ffffff;
+    background: #ffffff;
     width: 100%;
-    max-width: 450px;
-    padding: 35px;
-    border-radius: 12px;
-    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+    max-width: 480px;
+    padding: 45px 40px;
+    border: 1px solid #eee3df;
+    border-radius: 18px;
+    box-shadow: 0 10px 35px rgba(65, 45, 40, 0.07);
+    box-sizing: border-box;
 }
 
+/* Heading */
 .register-box h1 {
+    font-family: Georgia, serif;
+    font-size: 34px;
+    font-weight: 500;
     text-align: center;
-    color: #800020;
-    margin-bottom: 10px;
+    color: #292524;
+    margin-bottom: 12px;
 }
 
 .register-box > p {
     text-align: center;
-    color: #666666;
-    margin-bottom: 25px;
-}
-
-.form-group {
-    margin-bottom: 18px;
-}
-
-.form-group label {
-    display: block;
-    margin-bottom: 7px;
-    font-weight: 600;
-    color: #333333;
-}
-
-.form-group input {
-    width: 100%;
-    padding: 12px;
-    border: 1px solid #cccccc;
-    border-radius: 6px;
+    color: #817570;
     font-size: 14px;
-    box-sizing: border-box;
+    line-height: 1.7;
+    margin-bottom: 32px;
 }
 
-.form-group input:focus {
-    outline: none;
-    border-color: #800020;
+/* Form Fields */
+.register-box .form-group {
+    margin-bottom: 22px;
 }
 
-.register-btn {
+.register-box .form-group label {
+    display: block;
+    margin-bottom: 10px;
+    font-size: 14px;
+    font-weight: 600;
+    color: #453b37;
+}
+
+.register-box .form-group input {
     width: 100%;
-    padding: 13px;
-    background-color: #800020;
-    color: white;
+    padding: 14px 16px;
+    background: #ffffff;
+    border: 1px solid #e4d8d3;
+    border-radius: 9px;
+    font-size: 14px;
+    font-family: inherit;
+    color: #292524;
+    box-sizing: border-box;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.register-box .form-group input:focus {
+    outline: none;
+    border-color: #a47c74;
+    box-shadow: 0 0 0 3px rgba(164, 124, 116, 0.12);
+}
+
+/* Register Button */
+.register-btn {
+    display: block;
+    width: 100%;
+    padding: 16px 20px;
+    background: #a47c74;
+    color: #ffffff;
     border: none;
-    border-radius: 6px;
-    font-size: 16px;
+    border-radius: 9px;
+    font-size: 15px;
+    font-weight: 600;
     cursor: pointer;
+    transition: background 0.25s, transform 0.25s;
 }
 
 .register-btn:hover {
-    background-color: #600018;
+    background: #87625b;
+    transform: translateY(-2px);
 }
 
+/* Login Link */
 .login-link {
     text-align: center;
-    margin-top: 20px;
+    margin-top: 25px;
     font-size: 14px;
+    color: #817570;
 }
 
 .login-link a {
-    color: #800020;
+    color: #a47c74;
     font-weight: 600;
     text-decoration: none;
 }
 
 .login-link a:hover {
+    color: #75554f;
     text-decoration: underline;
 }
 
+/* Mobile Responsive */
+@media (max-width: 600px) {
+    .register-container {
+        padding: 40px 16px;
+    }
+
+    .register-box {
+        padding: 32px 24px;
+    }
+
+    .register-box h1 {
+        font-size: 29px;
+    }
+}
 
 
-/*Login Page*/
+/*NINORA - Premium Customer Login*/
 
 .login-container {
-    min-height: 100vh;
+    min-height: calc(100vh - 82px);
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: #fff5f7;
-    padding: 40px 20px;
+    background: #fdfbf9;
+    padding: 65px 20px;
+    box-sizing: border-box;
 }
 
 .login-box {
-    background-color: #ffffff;
+    background: #ffffff;
     width: 100%;
     max-width: 450px;
-    padding: 35px;
-    border-radius: 12px;
-    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+    padding: 45px 40px;
+    border: 1px solid #eee3df;
+    border-radius: 18px;
+    box-shadow: 0 10px 35px rgba(65, 45, 40, 0.07);
+    box-sizing: border-box;
 }
 
 .login-box h1 {
+    font-family: Georgia, serif;
+    font-size: 34px;
+    font-weight: 500;
     text-align: center;
-    color: #800020;
-    margin-bottom: 10px;
+    color: #292524;
+    margin-bottom: 12px;
 }
 
 .login-box > p {
     text-align: center;
-    color: #666666;
-    margin-bottom: 25px;
+    color: #817570;
+    font-size: 14px;
+    line-height: 1.7;
+    margin-bottom: 32px;
 }
 
-.login-btn {
+/* Login Form Fields */
+.login-box label {
+    display: block;
+    margin-bottom: 9px;
+    font-size: 14px;
+    font-weight: 600;
+    color: #453b37;
+}
+
+.login-box input:not([type="checkbox"]):not([type="radio"]) {
     width: 100%;
-    padding: 13px;
-    background-color: #800020;
-    color: white;
+    padding: 14px 16px;
+    margin-bottom: 22px;
+    background: #ffffff;
+    border: 1px solid #e4d8d3;
+    border-radius: 9px;
+    font-size: 14px;
+    font-family: inherit;
+    color: #292524;
+    box-sizing: border-box;
+}
+
+.login-box input:focus {
+    outline: none;
+    border-color: #a47c74;
+    box-shadow: 0 0 0 3px rgba(164, 124, 116, 0.12);
+}
+
+/* Login Button */
+.login-btn {
+    display: block;
+    width: 100%;
+    padding: 16px 20px;
+    background: #a47c74;
+    color: #ffffff;
     border: none;
-    border-radius: 6px;
-    font-size: 16px;
+    border-radius: 9px;
+    font-size: 15px;
+    font-weight: 600;
     cursor: pointer;
+    transition: background 0.25s, transform 0.25s;
 }
 
 .login-btn:hover {
-    background-color: #600018;
+    background: #87625b;
+    transform: translateY(-2px);
 }
 
+/* Register Link */
 .register-link {
     text-align: center;
-    margin-top: 20px;
+    margin-top: 25px;
     font-size: 14px;
+    color: #817570;
 }
 
 .register-link a {
-    color: #800020;
+    color: #a47c74;
     font-weight: 600;
     text-decoration: none;
 }
 
 .register-link a:hover {
+    color: #75554f;
     text-decoration: underline;
 }
 
+/* Mobile Responsive */
+@media (max-width: 600px) {
+    .login-container {
+        padding: 40px 16px;
+    }
+
+    .login-box {
+        padding: 32px 24px;
+    }
+
+    .login-box h1 {
+        font-size: 29px;
+    }
+}
 
 /*Products Page*/
 
@@ -421,178 +604,247 @@ a {
     border-radius: 6px;
 }
 
-/* Products Grid */
+
+/* NINORA - Premium Product Collection */
+
 .products-grid {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 25px;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 28px;
 }
 
 .product-card {
-    background-color: #fff;
-    border: 1px solid #eee;
-    border-radius: 10px;
+    background: #ffffff;
+    border: 1px solid #eee6e2;
+    border-radius: 16px;
     overflow: hidden;
     text-align: center;
-    padding-bottom: 20px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+    padding-bottom: 24px;
+    box-shadow: 0 5px 20px rgba(65, 45, 40, 0.06);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.product-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 14px 35px rgba(65, 45, 40, 0.12);
 }
 
 .product-card img {
+    display: block;
     width: 100%;
-    height: 250px;
+    height: 290px;
     object-fit: cover;
+    transition: transform 0.4s ease;
+}
+
+.product-card:hover img {
+    transform: scale(1.04);
 }
 
 .product-card h3 {
-    margin: 15px 10px 8px;
-    color: #333;
+    margin: 20px 12px 10px;
+    font-family: Georgia, serif;
+    font-size: 19px;
+    font-weight: 500;
+    color: #292524;
 }
 
 .product-price {
-    color: #800020;
-    font-weight: bold;
-    margin-bottom: 18px;
+    color: #a47c74;
+    font-size: 17px;
+    font-weight: 600;
+    margin-bottom: 20px;
 }
 
 .view-product-btn {
     display: inline-block;
-    padding: 10px 18px;
-    background-color: #800020;
-    color: #fff;
+    padding: 12px 24px;
+    background: #a47c74;
+    color: #ffffff;
     text-decoration: none;
-    border-radius: 6px;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 600;
+    transition: background 0.2s ease;
 }
 
 .view-product-btn:hover {
-    background-color: #600018;
+    background: #87625b;
 }
 
 /* Tablet */
-@media (max-width: 900px) {
+@media (max-width: 1050px) {
     .products-grid {
-        grid-template-columns: repeat(2, 1fr);
+        grid-template-columns: repeat(2, minmax(0, 1fr));
     }
 }
 
 /* Mobile */
 @media (max-width: 600px) {
-    .product-controls {
-        flex-direction: column;
-        align-items: stretch;
-    }
-
-    .category-filter {
-        flex-direction: column;
-        align-items: stretch;
-    }
-
     .products-grid {
         grid-template-columns: 1fr;
+        gap: 20px;
+    }
+
+    .product-card img {
+        height: 320px;
     }
 }
 
 
-/*Product Details Page*/
+/*NINORA - Premium Product Details*/
 
 .product-details-container {
     max-width: 1200px;
     margin: 0 auto;
-    padding: 40px 20px;
+    padding: 55px 25px 80px;
 }
 
-/* Back to Products Link */
+/* Back Link */
 .back-link {
-    display: inline-block;
-    margin-bottom: 30px;
-    color: #800020;
+    display: inline-flex;
+    align-items: center;
+    margin-bottom: 35px;
+    color: #a47c74;
     text-decoration: none;
+    font-size: 14px;
     font-weight: 600;
+    transition: color 0.2s;
 }
 
 .back-link:hover {
-    text-decoration: underline;
+    color: #75554f;
 }
 
-/* Product Details Layout */
+/* Product Layout */
 .product-details {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 50px;
+    gap: 65px;
     align-items: start;
 }
 
 /* Product Image */
+.product-image {
+    background: #faf7f5;
+    padding: 15px;
+    border-radius: 18px;
+}
+
 .product-image img {
+    display: block;
     width: 100%;
-    max-height: 550px;
+    max-height: 580px;
     object-fit: cover;
     border-radius: 12px;
 }
 
 /* Product Information */
+.product-info {
+    padding: 25px 0;
+}
+
 .product-info h1 {
-    font-size: 32px;
-    color: #333333;
-    margin-bottom: 15px;
+    font-family: Georgia, serif;
+    font-size: 38px;
+    font-weight: 500;
+    line-height: 1.3;
+    color: #292524;
+    margin-bottom: 18px;
 }
 
 .detail-price {
-    font-size: 24px;
-    font-weight: bold;
-    color: #800020;
-    margin-bottom: 20px;
+    font-size: 27px;
+    font-weight: 600;
+    color: #a47c74;
+    margin-bottom: 25px;
 }
 
 .detail-description {
-    color: #666666;
-    line-height: 1.7;
-    margin-bottom: 30px;
+    color: #756a65;
+    font-size: 15px;
+    line-height: 1.9;
+    margin-bottom: 35px;
 }
 
 /* Size and Quantity */
 .product-option {
-    margin-bottom: 22px;
+    margin-bottom: 25px;
 }
 
 .product-option label {
     display: block;
-    margin-bottom: 10px;
+    margin-bottom: 12px;
+    font-size: 14px;
     font-weight: 600;
-    color: #333333;
+    color: #453b37;
 }
 
 .product-option select,
 .product-option input {
     width: 100%;
-    max-width: 300px;
-    padding: 12px;
-    border: 1px solid #cccccc;
-    border-radius: 6px;
+    max-width: 350px;
+    padding: 14px 16px;
+    background: #ffffff;
+    border: 1px solid #e4d8d3;
+    border-radius: 9px;
     font-size: 15px;
+    color: #292524;
     box-sizing: border-box;
 }
 
 .product-option select:focus,
 .product-option input:focus {
     outline: none;
-    border-color: #800020;
+    border-color: #a47c74;
+    box-shadow: 0 0 0 3px rgba(164,124,116,0.12);
 }
 
 /* Add to Cart Button */
 .add-cart-btn {
-    background-color: #800020;
+    display: inline-block;
+    background: #a47c74;
     color: #ffffff;
-    padding: 14px 35px;
+    padding: 16px 42px;
     border: none;
-    border-radius: 6px;
-    font-size: 16px;
+    border-radius: 9px;
+    font-size: 15px;
+    font-weight: 600;
     cursor: pointer;
-    transition: background-color 0.3s;
+    transition: background 0.25s, transform 0.25s;
 }
 
 .add-cart-btn:hover {
-    background-color: #600018;
+    background: #87625b;
+    transform: translateY(-2px);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .product-details {
+        grid-template-columns: 1fr;
+        gap: 25px;
+    }
+
+    .product-details-container {
+        padding: 30px 20px 55px;
+    }
+
+    .product-info {
+        padding: 10px 0;
+    }
+
+    .product-info h1 {
+        font-size: 30px;
+    }
+
+    .product-image img {
+        max-height: 450px;
+    }
+
+    .add-cart-btn {
+        width: 100%;
+    }
 }
 
 /* Responsive Design */
@@ -635,55 +887,88 @@ a {
     padding: 70px 10%;
 }
 
+
+/* NINORA - Premium Home Hero Section */
+
 .hero-tagline {
-    color: #a55a70;
-    font-size: 13px;
+    color: #a47c74;
+    font-size: 12px;
     font-weight: 600;
-    letter-spacing: 3px;
-    margin-bottom: 20px;
+    letter-spacing: 3.5px;
+    text-transform: uppercase;
+    margin-bottom: 22px;
 }
 
 .ninora-hero-content h1 {
     font-family: Georgia, serif;
     font-size: clamp(40px, 5vw, 72px);
-    line-height: 1.1;
-    color: #800020;
-    margin-bottom: 25px;
+    font-weight: 500;
+    line-height: 1.15;
+    color: #292524;
+    margin-bottom: 26px;
+    letter-spacing: -1px;
 }
 
 .hero-description {
     font-size: 16px;
-    line-height: 1.8;
-    color: #666666;
-    max-width: 400px;
-    margin-bottom: 30px;
+    line-height: 1.9;
+    color: #756a65;
+    max-width: 440px;
+    margin-bottom: 35px;
 }
 
 .hero-shop-btn {
     display: inline-block;
-    background-color: #800020;
-    color: white;
-    padding: 15px 30px;
+    background: #a47c74;
+    color: #ffffff;
+    padding: 16px 36px;
     text-decoration: none;
-    border-radius: 4px;
+    border-radius: 9px;
+    font-size: 14px;
     font-weight: 600;
-    transition: background-color 0.3s;
+    transition: background 0.25s, transform 0.25s;
 }
 
 .hero-shop-btn:hover {
-    background-color: #600018;
+    background: #87625b;
+    color: #ffffff;
+    transform: translateY(-2px);
 }
 
+/* Hero Image */
 .ninora-hero-image {
     min-height: 550px;
     overflow: hidden;
+    background: #e8d8d4;
 }
 
 .ninora-hero-image img {
+    display: block;
     width: 100%;
     height: 100%;
+    min-height: 550px;
     object-fit: cover;
-    display: block;
+    transition: transform 0.6s ease;
+}
+
+.ninora-hero-image:hover img {
+    transform: scale(1.03);
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+    .ninora-hero-image,
+    .ninora-hero-image img {
+        min-height: 350px;
+    }
+
+    .ninora-hero-content h1 {
+        font-size: clamp(36px, 8vw, 48px);
+    }
+
+    .hero-description {
+        font-size: 14px;
+    }
 }
 
 /* Mobile Responsive */
@@ -703,12 +988,15 @@ a {
 }
 
 
-/* Fix Category Image Sizes */
+
+/* =====================================
+   NINORA - Premium Categories Section
+===================================== */
 
 .categories .category-grid {
     display: grid;
     grid-template-columns: repeat(4, minmax(0, 1fr));
-    gap: 25px;
+    gap: 28px;
 }
 
 .categories .category-card {
@@ -716,14 +1004,20 @@ a {
     min-width: 0;
     text-decoration: none;
     text-align: center;
+    transition: transform 0.3s ease;
 }
 
+.categories .category-card:hover {
+    transform: translateY(-5px);
+}
+
+/* Category Images */
 .categories .category-image {
     width: 100%;
-    height: 280px;
+    height: 310px;
     overflow: hidden;
-    border-radius: 12px;
-    background-color: #fff5f7;
+    border-radius: 14px;
+    background: #f2e8e4;
 }
 
 .categories .category-image img {
@@ -732,12 +1026,60 @@ a {
     height: 100%;
     object-fit: cover;
     object-position: center;
+    transition: transform 0.45s ease;
 }
 
+.categories .category-card:hover img {
+    transform: scale(1.06);
+}
+
+/* Category Names */
 .categories .category-card h3 {
-    margin-top: 15px;
-    font-size: 18px;
-    color: #333333;
+    margin-top: 20px;
+    font-family: Georgia, serif;
+    font-size: 20px;
+    font-weight: 500;
+    color: #292524;
+    transition: color 0.2s ease;
+}
+
+.categories .category-card:hover h3 {
+    color: #a47c74;
+}
+
+/* Tablet */
+@media (max-width: 1000px) {
+    .categories .category-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 24px;
+    }
+}
+
+/* Mobile */
+@media (max-width: 600px) {
+    .categories .category-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 15px;
+    }
+
+    .categories .category-image {
+        height: 220px;
+    }
+
+    .categories .category-card h3 {
+        font-size: 16px;
+        margin-top: 13px;
+    }
+}
+
+@media (max-width: 380px) {
+    .categories .category-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .categories .category-image {
+        height: 300px;
+    }
 }
 
 /* Tablet */
@@ -755,37 +1097,41 @@ a {
 }
 
 
-/* ==============================
-   Featured Products Section
-============================== */
+
+/* =====================================
+   NINORA - Premium Featured Products
+===================================== */
 
 .featured-products {
-    padding: 80px 5%;
-    background-color: #fff5f7;
+    padding: 85px 5%;
+    background: #faf7f5;
 }
 
 /* Section Heading */
 .featured-products .section-heading {
     text-align: center;
-    margin-bottom: 40px;
+    margin-bottom: 45px;
 }
 
 .featured-products .section-heading h2 {
     font-family: Georgia, serif;
-    font-size: 36px;
-    color: #800020;
-    margin-bottom: 12px;
+    font-size: 38px;
+    font-weight: 500;
+    color: #292524;
+    margin-bottom: 14px;
 }
 
 .featured-products .section-heading p {
-    color: #666666;
+    color: #817570;
+    font-size: 15px;
+    line-height: 1.7;
 }
 
-/* Products Grid */
+/* Featured Products Grid */
 .featured-grid {
     display: grid;
     grid-template-columns: repeat(4, minmax(0, 1fr));
-    gap: 25px;
+    gap: 28px;
     max-width: 1200px;
     margin: 0 auto;
 }
@@ -793,17 +1139,19 @@ a {
 /* Product Card */
 .featured-card {
     min-width: 0;
-    background-color: #ffffff;
-    border-radius: 12px;
+    background: #ffffff;
+    border: 1px solid #eee6e2;
+    border-radius: 16px;
     overflow: hidden;
     text-align: center;
-    padding-bottom: 25px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.06);
-    transition: transform 0.3s ease;
+    padding-bottom: 26px;
+    box-shadow: 0 5px 20px rgba(65, 45, 40, 0.06);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .featured-card:hover {
-    transform: translateY(-5px);
+    transform: translateY(-6px);
+    box-shadow: 0 14px 35px rgba(65, 45, 40, 0.12);
 }
 
 /* Product Image */
@@ -813,58 +1161,103 @@ a {
     height: 300px;
     object-fit: cover;
     object-position: center;
+    transition: transform 0.4s ease;
+}
+
+.featured-card:hover img {
+    transform: scale(1.04);
 }
 
 /* Product Name */
 .featured-card h3 {
-    font-size: 18px;
-    color: #333333;
-    margin: 20px 10px 10px;
+    font-family: Georgia, serif;
+    font-size: 19px;
+    font-weight: 500;
+    color: #292524;
+    margin: 22px 12px 10px;
 }
 
 /* Product Price */
 .featured-price {
     font-size: 17px;
     font-weight: 600;
-    color: #800020;
-    margin-bottom: 20px;
+    color: #a47c74;
+    margin-bottom: 22px;
 }
 
 /* View Details Button */
 .featured-btn {
     display: inline-block;
-    background-color: #800020;
+    background: #a47c74;
     color: #ffffff;
-    padding: 12px 25px;
-    border-radius: 6px;
+    padding: 12px 26px;
+    border-radius: 9px;
     text-decoration: none;
     font-size: 14px;
-    transition: background-color 0.3s;
+    font-weight: 600;
+    transition: background 0.25s ease, transform 0.25s ease;
 }
 
 .featured-btn:hover {
-    background-color: #600018;
+    background: #87625b;
+    color: #ffffff;
+    transform: translateY(-2px);
 }
 
-/* View All Products */
+/* Tablet */
+@media (max-width: 1000px) {
+    .featured-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+/* Mobile */
+@media (max-width: 600px) {
+    .featured-products {
+        padding: 55px 16px;
+    }
+
+    .featured-products .section-heading h2 {
+        font-size: 30px;
+    }
+
+    .featured-grid {
+        grid-template-columns: 1fr;
+        gap: 22px;
+    }
+
+    .featured-card img {
+        height: 330px;
+    }
+}
+
+
+/* NINORA - View All Products Button */
+
 .view-all-container {
     text-align: center;
-    margin-top: 45px;
+    margin-top: 48px;
 }
 
 .view-all-btn {
     display: inline-block;
-    padding: 14px 30px;
-    border: 2px solid #800020;
-    color: #800020;
-    border-radius: 6px;
+    padding: 14px 32px;
+    border: 1px solid #a47c74;
+    background: transparent;
+    color: #a47c74;
+    border-radius: 9px;
     text-decoration: none;
+    font-size: 14px;
     font-weight: 600;
+    transition: background 0.25s ease,
+                color 0.25s ease,
+                transform 0.25s ease;
 }
 
 .view-all-btn:hover {
-    background-color: #800020;
+    background: #a47c74;
     color: #ffffff;
+    transform: translateY(-2px);
 }
 
 /* Tablet */
@@ -886,186 +1279,158 @@ a {
 }
 
 
-/* ==============================
-   Shopping Cart Page
-============================== */
+
+/* NINORA - Premium Shopping Cart */
 
 .cart-container {
     max-width: 1200px;
     margin: 0 auto;
-    padding: 60px 20px;
+    padding: 65px 24px 90px;
     min-height: 70vh;
 }
 
-/* Page Heading */
+/* Heading */
 .cart-heading {
     text-align: center;
-    margin-bottom: 45px;
+    margin-bottom: 48px;
 }
 
 .cart-heading h1 {
     font-family: Georgia, serif;
-    font-size: 38px;
-    color: #800020;
+    font-size: 40px;
+    font-weight: 500;
+    color: #292524;
     margin-bottom: 12px;
 }
 
 .cart-heading p {
-    color: #777777;
-    font-size: 16px;
+    color: #817570;
+    font-size: 15px;
 }
 
-/* Cart Layout */
+/* Layout */
 .cart-layout {
     display: grid;
     grid-template-columns: minmax(0, 2fr) minmax(280px, 1fr);
-    gap: 35px;
+    gap: 32px;
     align-items: start;
 }
 
-/* Shopping Bag */
-.cart-items-section {
-    background-color: #ffffff;
-    padding: 30px;
-    border: 1px solid #f0e0e4;
-    border-radius: 12px;
+/* Shopping Bag and Summary */
+.cart-items-section,
+.cart-summary {
+    background: #ffffff;
+    padding: 32px;
+    border: 1px solid #eee3df;
+    border-radius: 16px;
+    box-shadow: 0 6px 24px rgba(65, 45, 40, 0.05);
 }
 
 .cart-items-section h2,
 .cart-summary h2 {
-    font-size: 22px;
-    color: #333333;
+    font-family: Georgia, serif;
+    font-size: 23px;
+    font-weight: 500;
+    color: #292524;
     margin-bottom: 25px;
 }
 
-/* Individual Cart Item */
+/* Cart Items */
 .cart-item {
     display: flex;
-    gap: 20px;
-    padding: 20px 0;
-    border-bottom: 1px solid #eeeeee;
+    gap: 22px;
+    padding: 22px 0;
+    border-bottom: 1px solid #eee6e2;
 }
 
 .cart-item img {
-    width: 110px;
-    height: 140px;
+    width: 115px;
+    height: 145px;
     object-fit: cover;
-    border-radius: 8px;
+    border-radius: 10px;
+    background: #faf7f5;
 }
 
 .cart-item-details {
     flex: 1;
+    min-width: 0;
 }
 
 .cart-item-details h3 {
-    font-size: 18px;
-    margin-bottom: 10px;
-    color: #333333;
+    font-family: Georgia, serif;
+    font-size: 19px;
+    color: #292524;
+    margin-bottom: 12px;
 }
 
 .cart-item-details p {
-    color: #666666;
-    margin-bottom: 8px;
+    color: #756a65;
+    font-size: 14px;
+    margin-bottom: 10px;
 }
 
 .cart-item-price {
     font-weight: 600;
-    color: #800020 !important;
+    color: #a47c74 !important;
 }
 
-/* Quantity Input */
+/* Quantity */
 .cart-quantity {
-    width: 75px;
-    padding: 8px;
-    border: 1px solid #cccccc;
-    border-radius: 6px;
+    width: 80px;
+    padding: 10px;
+    border: 1px solid #e4d8d3;
+    border-radius: 8px;
+    font-size: 14px;
+}
+
+.cart-quantity:focus {
+    outline: none;
+    border-color: #a47c74;
 }
 
 /* Remove Button */
 .remove-cart-btn {
     background: none;
     border: none;
-    color: #b3261e;
+    color: #b15e59;
     cursor: pointer;
-    font-size: 14px;
+    font-size: 13px;
+    font-weight: 600;
     padding: 8px 0;
 }
 
 .remove-cart-btn:hover {
+    color: #923f3a;
     text-decoration: underline;
 }
 
 /* Continue Shopping */
 .continue-shopping {
     display: inline-block;
-    margin-top: 25px;
-    color: #800020;
+    margin-top: 28px;
+    color: #a47c74;
     text-decoration: none;
+    font-size: 14px;
     font-weight: 600;
 }
 
 .continue-shopping:hover {
+    color: #75554f;
     text-decoration: underline;
 }
 
-/* Order Summary */
-.cart-summary {
-    background-color: #fff5f7;
-    padding: 30px;
-    border-radius: 12px;
-    border: 1px solid #f0e0e4;
-}
 
-.summary-row {
-    display: flex;
-    justify-content: space-between;
-    gap: 15px;
-    margin-bottom: 20px;
-    color: #555555;
-}
 
-.summary-total {
-    border-top: 1px solid #dfc7cd;
-    padding-top: 20px;
-    font-size: 20px;
-    font-weight: bold;
-    color: #800020;
-}
-
-.summary-note {
-    font-size: 13px;
-    line-height: 1.6;
-    color: #777777;
-    margin-bottom: 25px;
-}
-
-/* Checkout Button */
-.checkout-btn {
-    display: block;
-    text-align: center;
-    padding: 15px;
-    background-color: #800020;
-    color: #ffffff;
-    border-radius: 6px;
-    text-decoration: none;
-    font-weight: 600;
-}
-
-.checkout-btn:hover {
-    background-color: #600018;
-}
-
-/* Empty Cart Message */
-#emptyCartMessage {
-    text-align: center;
-    padding: 40px 10px;
-    color: #777777;
-}
-
-/* Tablet and Mobile */
-@media (max-width: 768px) {
+/* Responsive */
+@media (max-width: 850px) {
     .cart-layout {
         grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 600px) {
+    .cart-container {
+        padding: 35px 16px 60px;
     }
 
     .cart-heading h1 {
@@ -1076,99 +1441,174 @@ a {
     .cart-summary {
         padding: 20px;
     }
-}
 
-@media (max-width: 480px) {
     .cart-item {
-        flex-direction: column;
+        gap: 14px;
     }
 
     .cart-item img {
-        width: 100%;
-        height: 220px;
+        width: 85px;
+        height: 110px;
     }
 }
 
 
-/*Checkout Page Styling*/
+/* NINORA - Order Summary Styling */
+
+.cart-summary .summary-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 15px;
+    padding: 14px 0;
+    font-size: 15px;
+    color: #756a65;
+}
+
+.cart-summary .summary-row span:last-child {
+    color: #292524;
+    font-weight: 600;
+}
+
+.cart-summary .summary-total {
+    margin-top: 12px;
+    padding: 20px 0;
+    border-top: 1px solid #e8ddd8;
+    font-size: 19px;
+    font-weight: 700;
+    color: #292524;
+}
+
+.cart-summary .summary-total span:last-child {
+    color: #a47c74;
+    font-size: 22px;
+    font-weight: 700;
+}
+
+.cart-summary .summary-note {
+    margin: 15px 0 25px;
+    font-size: 13px;
+    line-height: 1.7;
+    color: #91847e;
+}
+
+.cart-summary .checkout-btn {
+    display: block;
+    width: 100%;
+    box-sizing: border-box;
+    padding: 16px 20px;
+    background: #a47c74;
+    color: #ffffff;
+    text-align: center;
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 600;
+    border-radius: 9px;
+    transition: background 0.25s ease,
+                transform 0.25s ease;
+}
+
+.cart-summary .checkout-btn:hover {
+    background: #87625b;
+    color: #ffffff;
+    transform: translateY(-2px);
+}
+
+
+
+/* =====================================
+   NINORA - Premium Checkout Page
+===================================== */
 
 .checkout-container {
     max-width: 1200px;
     margin: 0 auto;
-    padding: 60px 20px;
+    padding: 65px 24px 90px;
     min-height: 70vh;
 }
 
-/* Checkout Heading */
+/* Heading */
 .checkout-heading {
     text-align: center;
-    margin-bottom: 45px;
+    margin-bottom: 48px;
 }
 
 .checkout-heading h1 {
     font-family: Georgia, serif;
-    font-size: 38px;
-    color: #800020;
+    font-size: 40px;
+    font-weight: 500;
+    color: #292524;
     margin-bottom: 12px;
 }
 
 .checkout-heading p {
-    font-size: 16px;
-    color: #777;
+    font-size: 15px;
+    color: #817570;
 }
 
-/* Checkout Layout */
+/* Layout */
 .checkout-layout {
     display: grid;
     grid-template-columns: minmax(0, 2fr) minmax(280px, 1fr);
-    gap: 35px;
+    gap: 32px;
     align-items: start;
 }
 
-/* Checkout Form Boxes */
+/* Form Boxes */
+.checkout-box,
+.checkout-summary {
+    background: #ffffff;
+    border: 1px solid #eee3df;
+    border-radius: 16px;
+    padding: 32px;
+    box-shadow: 0 6px 24px rgba(65, 45, 40, 0.05);
+}
+
 .checkout-box {
-    background-color: #ffffff;
-    border: 1px solid #f0e0e4;
-    border-radius: 12px;
-    padding: 30px;
     margin-bottom: 25px;
 }
 
 .checkout-box h2,
 .checkout-summary h2 {
-    font-size: 22px;
-    color: #333;
+    font-family: Georgia, serif;
+    font-size: 23px;
+    font-weight: 500;
+    color: #292524;
     margin-bottom: 25px;
 }
 
 /* Form Fields */
 .checkout-field {
-    margin-bottom: 20px;
+    margin-bottom: 22px;
 }
 
 .checkout-field label {
     display: block;
     font-size: 14px;
     font-weight: 600;
-    color: #444;
-    margin-bottom: 8px;
+    color: #453b37;
+    margin-bottom: 10px;
 }
 
 .checkout-field input,
 .checkout-field textarea {
     width: 100%;
-    padding: 13px 15px;
-    border: 1px solid #dddddd;
-    border-radius: 6px;
+    padding: 14px 16px;
+    background: #ffffff;
+    border: 1px solid #e4d8d3;
+    border-radius: 9px;
     font-size: 14px;
     font-family: inherit;
+    color: #292524;
     box-sizing: border-box;
+    transition: border-color 0.2s, box-shadow 0.2s;
 }
 
 .checkout-field input:focus,
 .checkout-field textarea:focus {
     outline: none;
-    border-color: #800020;
+    border-color: #a47c74;
+    box-shadow: 0 0 0 3px rgba(164,124,116,0.12);
 }
 
 .checkout-field textarea {
@@ -1180,26 +1620,33 @@ a {
     display: flex;
     align-items: center;
     gap: 12px;
-    padding: 15px;
+    padding: 17px 18px;
     margin-bottom: 12px;
-    border: 1px solid #eeeeee;
-    border-radius: 8px;
+    background: #ffffff;
+    border: 1px solid #e9dfdb;
+    border-radius: 10px;
     cursor: pointer;
+    transition: background 0.2s, border-color 0.2s;
 }
 
 .payment-option:hover {
-    background-color: #fff5f7;
-    border-color: #800020;
+    background: #faf3f0;
+    border-color: #a47c74;
+}
+
+.payment-option:has(input:checked) {
+    background: #faf3f0;
+    border-color: #a47c74;
 }
 
 .payment-option input {
-    accent-color: #800020;
+    accent-color: #a47c74;
 }
 
 .payment-note {
-    color: #777;
+    color: #91847e;
     font-size: 13px;
-    line-height: 1.6;
+    line-height: 1.7;
     margin-top: 15px;
 }
 
@@ -1207,45 +1654,115 @@ a {
 .place-order-btn {
     display: block;
     width: 100%;
-    padding: 16px;
-    background-color: #800020;
+    padding: 17px 22px;
+    background: #a47c74;
     color: #ffffff;
     border: none;
-    border-radius: 6px;
-    font-size: 16px;
+    border-radius: 9px;
+    font-size: 15px;
     font-weight: 600;
     cursor: pointer;
+    transition: background 0.25s, transform 0.25s;
 }
 
 .place-order-btn:hover {
-    background-color: #600018;
+    background: #87625b;
+    transform: translateY(-2px);
 }
 
 /* Order Summary */
 .checkout-summary {
-    background-color: #fff5f7;
-    padding: 30px;
-    border: 1px solid #f0e0e4;
-    border-radius: 12px;
+    position: sticky;
+    top: 110px;
 }
 
 .checkout-item {
     display: flex;
     justify-content: space-between;
+    align-items: flex-start;
     gap: 15px;
-    padding: 12px 0;
-    border-bottom: 1px solid #ead7dc;
+    padding: 15px 0;
+    border-bottom: 1px solid #eee6e2;
 }
 
 .checkout-item p {
     font-size: 14px;
-    color: #555;
+    line-height: 1.6;
+    color: #756a65;
 }
 
 .checkout-item-price {
     font-weight: 600;
-    color: #800020;
+    color: #a47c74;
     white-space: nowrap;
+}
+
+/* NINORA - Checkout Order Summary */
+
+.checkout-summary #checkoutItems {
+    margin-bottom: 20px;
+}
+
+.checkout-summary .summary-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 15px;
+    padding: 16px 0;
+    font-size: 15px;
+    color: #756a65;
+}
+
+.checkout-summary .summary-total {
+    margin-top: 15px;
+    padding: 22px 0;
+    border-top: 1px solid #e8ddd8;
+    font-size: 19px;
+    font-weight: 700;
+    color: #292524;
+}
+
+.checkout-summary .summary-total span:last-child {
+    color: #a47c74;
+    font-size: 23px;
+    font-weight: 700;
+}
+
+.checkout-summary .summary-note {
+    margin-top: 15px;
+    padding: 15px;
+    background: #faf7f5;
+    border-radius: 9px;
+    color: #91847e;
+    font-size: 13px;
+    line-height: 1.7;
+}
+
+
+/* Responsive */
+@media (max-width: 850px) {
+    .checkout-layout {
+        grid-template-columns: 1fr;
+    }
+
+    .checkout-summary {
+        position: static;
+    }
+}
+
+@media (max-width: 600px) {
+    .checkout-container {
+        padding: 35px 16px 60px;
+    }
+
+    .checkout-heading h1 {
+        font-size: 30px;
+    }
+
+    .checkout-box,
+    .checkout-summary {
+        padding: 22px;
+    }
 }
 
 /* Responsive Design */
@@ -1265,37 +1782,40 @@ a {
 }
 
 
-/* ==============================
-   Order Confirmation Page
-============================== */
+
+/* =====================================
+   NINORA - Premium Order Confirmation
+===================================== */
 
 .confirmation-container {
     min-height: 75vh;
     display: flex;
     justify-content: center;
     align-items: center;
-    padding: 60px 20px;
-    background-color: #fff5f7;
+    padding: 70px 20px;
+    background: #fdfbf9;
 }
 
 .confirmation-card {
     width: 100%;
     max-width: 650px;
-    padding: 45px 40px;
-    background-color: #ffffff;
-    border-radius: 14px;
+    padding: 50px 45px;
+    background: #ffffff;
+    border: 1px solid #eee3df;
+    border-radius: 18px;
     text-align: center;
-    box-shadow: 0 6px 25px rgba(0, 0, 0, 0.07);
+    box-shadow: 0 10px 35px rgba(65, 45, 40, 0.07);
+    box-sizing: border-box;
 }
 
 /* Success Icon */
 .confirmation-icon {
-    width: 75px;
-    height: 75px;
-    margin: 0 auto 25px;
+    width: 78px;
+    height: 78px;
+    margin: 0 auto 28px;
     border-radius: 50%;
-    background-color: #e8f5e9;
-    color: #2e7d32;
+    background: #eaf4ec;
+    color: #42865a;
     font-size: 42px;
     display: flex;
     justify-content: center;
@@ -1305,67 +1825,76 @@ a {
 /* Heading */
 .confirmation-card h1 {
     font-family: Georgia, serif;
-    font-size: 32px;
-    color: #800020;
-    margin-bottom: 15px;
+    font-size: 35px;
+    font-weight: 500;
+    color: #292524;
+    margin-bottom: 16px;
 }
 
 .confirmation-message {
-    color: #666666;
-    font-size: 16px;
+    color: #817570;
+    font-size: 15px;
+    line-height: 1.8;
     margin-bottom: 35px;
 }
 
-/* Order Details Box */
+/* Order Details */
 .confirmation-details {
-    background-color: #fff8fa;
-    border: 1px solid #f0e0e4;
-    border-radius: 10px;
-    padding: 25px;
+    background: #faf7f5;
+    border: 1px solid #eee3df;
+    border-radius: 12px;
+    padding: 28px;
     text-align: left;
-    margin-bottom: 25px;
+    margin-bottom: 28px;
 }
 
 .confirmation-details h2 {
-    font-size: 21px;
-    color: #333333;
+    font-family: Georgia, serif;
+    font-size: 22px;
+    font-weight: 500;
+    color: #292524;
     margin-bottom: 22px;
 }
 
 .confirmation-row {
     display: flex;
     justify-content: space-between;
-    gap: 15px;
-    padding: 12px 0;
-    border-bottom: 1px solid #ead7dc;
+    gap: 18px;
+    padding: 14px 0;
+    border-bottom: 1px solid #e8ddd8;
     font-size: 14px;
 }
 
 .confirmation-row span {
-    color: #666666;
+    color: #817570;
 }
 
 .confirmation-row strong {
-    color: #333333;
+    color: #292524;
+    font-weight: 600;
     text-align: right;
     overflow-wrap: anywhere;
 }
 
 .confirmation-total {
     border-bottom: none;
-    padding-top: 20px;
+    border-top: 1px solid #d9c8c2;
+    margin-top: 12px;
+    padding-top: 22px;
     font-size: 18px;
 }
 
 .confirmation-total strong {
-    color: #800020;
+    color: #a47c74;
+    font-size: 21px;
 }
 
 /* Note */
 .confirmation-note {
-    color: #777777;
-    font-size: 14px;
-    margin-bottom: 25px;
+    color: #91847e;
+    font-size: 13px;
+    line-height: 1.7;
+    margin-bottom: 30px;
 }
 
 /* Action Buttons */
@@ -1379,46 +1908,53 @@ a {
 .continue-shopping-btn,
 .view-orders-btn {
     display: inline-block;
-    padding: 13px 22px;
-    border-radius: 6px;
+    padding: 14px 25px;
+    border-radius: 9px;
     text-decoration: none;
     font-size: 14px;
     font-weight: 600;
-    transition: 0.3s;
+    transition: background 0.25s, transform 0.25s;
 }
 
 .continue-shopping-btn {
-    border: 2px solid #800020;
-    color: #800020;
-    background-color: #ffffff;
+    border: 1px solid #a47c74;
+    color: #a47c74;
+    background: #ffffff;
 }
 
 .continue-shopping-btn:hover {
-    background-color: #fff5f7;
+    background: #faf3f0;
+    transform: translateY(-2px);
 }
 
 .view-orders-btn {
-    background-color: #800020;
+    background: #a47c74;
     color: #ffffff;
-    border: 2px solid #800020;
+    border: 1px solid #a47c74;
 }
 
 .view-orders-btn:hover {
-    background-color: #600018;
+    background: #87625b;
+    color: #ffffff;
+    transform: translateY(-2px);
 }
 
-/* Responsive Design */
+/* Responsive */
 @media (max-width: 600px) {
+    .confirmation-container {
+        padding: 35px 16px 60px;
+    }
+
     .confirmation-card {
-        padding: 30px 20px;
+        padding: 32px 20px;
     }
 
     .confirmation-card h1 {
-        font-size: 26px;
+        font-size: 28px;
     }
 
     .confirmation-details {
-        padding: 18px;
+        padding: 20px;
     }
 
     .confirmation-actions {
@@ -1433,59 +1969,68 @@ a {
 }
 
 
-/* ==============================
-   My Orders Page Styling
-============================== */
+/* =====================================
+   NINORA - Premium My Orders Page
+===================================== */
 
 .orders-container {
     max-width: 1100px;
     margin: 0 auto;
-    padding: 60px 20px;
+    padding: 65px 24px 90px;
     min-height: 75vh;
 }
 
 /* Page Heading */
 .orders-heading {
     text-align: center;
-    margin-bottom: 45px;
+    margin-bottom: 48px;
 }
 
 .orders-heading h1 {
     font-family: Georgia, serif;
-    font-size: 38px;
-    color: #800020;
+    font-size: 40px;
+    font-weight: 500;
+    color: #292524;
     margin-bottom: 12px;
 }
 
 .orders-heading p {
-    color: #777777;
-    font-size: 16px;
+    color: #817570;
+    font-size: 15px;
 }
 
 /* Orders Section */
 .orders-section {
-    background-color: #ffffff;
-    border: 1px solid #f0e0e4;
-    border-radius: 12px;
-    padding: 30px;
+    background: #ffffff;
+    border: 1px solid #eee3df;
+    border-radius: 16px;
+    padding: 32px;
+    box-shadow: 0 6px 24px rgba(65, 45, 40, 0.05);
 }
 
 .orders-section-header {
-    margin-bottom: 25px;
+    margin-bottom: 28px;
 }
 
 .orders-section-header h2 {
-    font-size: 23px;
-    color: #333333;
+    font-family: Georgia, serif;
+    font-size: 24px;
+    font-weight: 500;
+    color: #292524;
 }
 
 /* Individual Order Card */
 .order-card {
-    border: 1px solid #ead7dc;
-    border-radius: 10px;
-    padding: 25px;
-    margin-bottom: 20px;
-    background-color: #fffafb;
+    background: #fdfbf9;
+    border: 1px solid #eee3df;
+    border-radius: 14px;
+    padding: 28px;
+    margin-bottom: 22px;
+    transition: box-shadow 0.25s ease;
+}
+
+.order-card:hover {
+    box-shadow: 0 8px 24px rgba(65, 45, 40, 0.08);
 }
 
 .order-card-header {
@@ -1493,17 +2038,19 @@ a {
     justify-content: space-between;
     align-items: center;
     gap: 15px;
-    margin-bottom: 20px;
+    margin-bottom: 24px;
 }
 
 .order-card-header h3 {
-    font-size: 18px;
-    color: #800020;
+    font-family: Georgia, serif;
+    font-size: 20px;
+    font-weight: 500;
+    color: #a47c74;
     overflow-wrap: anywhere;
 }
 
 .order-date {
-    color: #777777;
+    color: #91847e;
     font-size: 13px;
 }
 
@@ -1511,103 +2058,152 @@ a {
 .order-info {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 15px;
-    margin-bottom: 20px;
+    gap: 18px;
+    margin-bottom: 24px;
 }
 
 .order-info p {
     font-size: 14px;
-    color: #555555;
+    line-height: 1.7;
+    color: #756a65;
 }
 
 .order-info strong {
-    color: #333333;
+    color: #292524;
+    font-weight: 600;
 }
 
 /* Order Status */
 .order-status {
     display: inline-block;
-    padding: 7px 14px;
-    border-radius: 20px;
-    font-size: 13px;
+    padding: 8px 15px;
+    border-radius: 25px;
+    font-size: 12px;
     font-weight: 600;
+    letter-spacing: 0.2px;
 }
 
 .order-status.pending {
-    background-color: #fff3cd;
-    color: #856404;
+    background: #fff3dc;
+    color: #946b25;
 }
 
 .order-status.processing {
-    background-color: #dbeafe;
-    color: #1d4ed8;
+    background: #e8f0fa;
+    color: #416a96;
 }
 
+.order-status.dispatched,
 .order-status.shipped {
-    background-color: #e0e7ff;
-    color: #4338ca;
+    background: #eee9fa;
+    color: #675397;
 }
 
 .order-status.delivered {
-    background-color: #dcfce7;
-    color: #166534;
+    background: #e5f3e9;
+    color: #397b4c;
 }
 
 .order-status.cancelled {
-    background-color: #fee2e2;
-    color: #991b1b;
+    background: #fae7e5;
+    color: #a44b45;
 }
 
 /* Ordered Products */
 .order-products {
-    border-top: 1px solid #ead7dc;
-    padding-top: 15px;
+    border-top: 1px solid #e8ddd8;
+    padding-top: 20px;
 }
 
 .order-products h4 {
     font-size: 15px;
-    color: #333333;
-    margin-bottom: 12px;
+    font-weight: 600;
+    color: #292524;
+    margin-bottom: 15px;
 }
 
 .order-product {
     display: flex;
     justify-content: space-between;
     gap: 15px;
-    margin-bottom: 10px;
+    margin-bottom: 12px;
     font-size: 14px;
-    color: #666666;
+    line-height: 1.6;
+    color: #756a65;
 }
 
 /* Empty Orders */
 #noOrdersMessage {
     text-align: center;
-    padding: 50px 15px;
+    padding: 55px 20px;
 }
 
 #noOrdersMessage h3 {
-    font-size: 22px;
-    color: #800020;
-    margin-bottom: 12px;
+    font-family: Georgia, serif;
+    font-size: 25px;
+    font-weight: 500;
+    color: #292524;
+    margin-bottom: 14px;
 }
 
 #noOrdersMessage p {
-    color: #777777;
-    margin-bottom: 25px;
+    color: #817570;
+    font-size: 14px;
+    margin-bottom: 28px;
 }
 
 .shop-now-btn {
     display: inline-block;
-    background-color: #800020;
+    background: #a47c74;
     color: #ffffff;
-    padding: 13px 25px;
-    border-radius: 6px;
+    padding: 14px 28px;
+    border-radius: 9px;
     text-decoration: none;
+    font-size: 14px;
     font-weight: 600;
+    transition: background 0.25s, transform 0.25s;
 }
 
 .shop-now-btn:hover {
-    background-color: #600018;
+    background: #87625b;
+    color: #ffffff;
+    transform: translateY(-2px);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .orders-container {
+        padding: 35px 16px 60px;
+    }
+
+    .orders-heading h1 {
+        font-size: 30px;
+    }
+
+    .orders-section {
+        padding: 20px;
+    }
+
+    .order-card {
+        padding: 20px;
+    }
+
+    .order-card-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .order-info {
+        grid-template-columns: 1fr;
+        gap: 12px;
+    }
+}
+
+@media (max-width: 480px) {
+    .order-product {
+        flex-direction: column;
+        gap: 5px;
+    }
 }
 
 /* Responsive Design */
@@ -1773,58 +2369,77 @@ a {
     background-color: #fff5f7;
 }
 
+
+/* ====================================
+   NINORA - Modern Admin Panel Theme
+==================================== */
+
 /* Sidebar */
 .admin-sidebar {
-    width: 250px;
-    background-color: #800020;
-    color: #ffffff;
-    padding: 30px 20px;
+    width: 260px;
+    min-height: 100vh;
+    background: #e8d8d4;
+    color: #292524;
+    padding: 35px 20px;
     display: flex;
     flex-direction: column;
     box-sizing: border-box;
+    border-right: 1px solid #e9dfdb;
 }
 
+/* Logo */
 .admin-sidebar-logo {
     text-align: center;
-    margin-bottom: 45px;
+    margin-bottom: 50px;
 }
 
 .admin-sidebar-logo h2 {
     font-family: Georgia, serif;
-    font-size: 28px;
-    letter-spacing: 3px;
+    font-size: 30px;
+    letter-spacing: 4px;
     margin-bottom: 8px;
-    color: #ffffff;
+    color: #292524;
 }
 
 .admin-sidebar-logo p {
-    font-size: 13px;
-    color: #f5d9e1;
+    font-size: 12px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: #a47c74;
 }
 
-/* Sidebar Navigation */
+/* Navigation */
 .admin-sidebar-nav {
     display: flex;
     flex-direction: column;
-    gap: 12px;
+    gap: 10px;
 }
 
 .admin-sidebar-nav a {
     display: block;
-    color: #ffffff;
+    color: #625854;
     text-decoration: none;
-    padding: 14px 16px;
-    border-radius: 8px;
-    font-size: 15px;
-    transition: background-color 0.3s;
+    padding: 15px 18px;
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: 500;
+    transition: all 0.3s ease;
 }
 
-.admin-sidebar-nav a:hover,
+.admin-sidebar-nav a:hover {
+    background: #f0e5e1;
+    color: #292524;
+    transform: translateX(4px);
+}
+
 .admin-sidebar-nav a.active {
-    background-color: #a52a4a;
+    background: #f7eeeb;
+    color: #45332f;
+    font-weight: 600;
+    box-shadow: 0 3px 12px rgba(80, 55, 50, 0.08);
 }
 
-/* Sidebar Footer */
+/* Footer */
 .admin-sidebar-footer {
     margin-top: auto;
     padding-top: 30px;
@@ -1832,35 +2447,40 @@ a {
 }
 
 .admin-sidebar-footer a {
-    color: #ffffff;
+    color: #a47c74;
     text-decoration: none;
-    font-size: 14px;
+    font-size: 13px;
+    font-weight: 500;
 }
 
 .admin-sidebar-footer a:hover {
+    color: #292524;
     text-decoration: underline;
 }
 
-/* Main Dashboard */
+/* Main Content */
 .admin-dashboard-main {
     flex: 1;
     min-width: 0;
     padding: 45px 40px;
+    background: #fdfbf9;
 }
 
+/* Header */
 .admin-dashboard-header {
-    margin-bottom: 35px;
+    margin-bottom: 40px;
 }
 
 .admin-dashboard-header h1 {
-    font-size: 30px;
-    color: #333333;
-    margin-bottom: 10px;
+    font-family: Georgia, serif;
+    font-size: 34px;
+    color: #292524;
+    margin-bottom: 12px;
 }
 
 .admin-dashboard-header p {
     font-size: 15px;
-    color: #777777;
+    color: #817570;
 }
 
 /* Dashboard Cards */
@@ -1948,10 +2568,71 @@ a {
     }
 }
 
+/* Modern Admin Dashboard Cards */
 
-/* ==============================
-   Admin Manage Products Page
-============================== */
+.admin-dashboard-cards {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 25px;
+}
+
+.admin-dashboard-card {
+    background: #ffffff;
+    padding: 32px 28px;
+    border: 1px solid #eee3df;
+    border-radius: 16px;
+    box-shadow: 0 6px 24px rgba(70, 45, 40, 0.05);
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.admin-dashboard-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 30px rgba(70, 45, 40, 0.10);
+}
+
+.admin-dashboard-card h3 {
+    color: #292524;
+    font-size: 21px;
+    margin-bottom: 14px;
+}
+
+.admin-dashboard-card p {
+    color: #817570;
+    font-size: 14px;
+    line-height: 1.7;
+    margin-bottom: 24px;
+}
+
+.admin-dashboard-card a {
+    display: inline-block;
+    background: #a47c74;
+    color: #ffffff;
+    padding: 12px 20px;
+    border-radius: 8px;
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.admin-dashboard-card a:hover {
+    background: #87625b;
+}
+
+@media (max-width: 1050px) {
+    .admin-dashboard-cards {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 700px) {
+    .admin-dashboard-cards {
+        grid-template-columns: 1fr;
+    }
+}
+
+
+
+/*Admin Manage Products Page*/
 
 /* Page Header */
 .admin-products-header {
@@ -2427,5 +3108,250 @@ a {
         margin-left: 0;
         margin-top: 12px;
         display: block;
+    }
+}
+
+
+/* ==================================
+   Admin Customer Details Page
+================================== */
+
+/* Page Header */
+.admin-customers-header {
+    margin-bottom: 30px;
+}
+
+.admin-customers-header h1 {
+    font-size: 30px;
+    color: #333333;
+    margin-bottom: 10px;
+}
+
+.admin-customers-header p {
+    font-size: 15px;
+    color: #777777;
+}
+
+/* Customer List Section */
+.admin-customers-section {
+    background-color: #ffffff;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.06);
+}
+
+.admin-customers-section h2 {
+    font-size: 22px;
+    color: #333333;
+    margin-bottom: 25px;
+}
+
+/* Responsive Table */
+.admin-customers-table-wrapper {
+    width: 100%;
+    overflow-x: auto;
+}
+
+.admin-customers-table {
+    width: 100%;
+    min-width: 750px;
+    border-collapse: collapse;
+    text-align: left;
+}
+
+.admin-customers-table th,
+.admin-customers-table td {
+    padding: 15px;
+    border-bottom: 1px solid #eeeeee;
+    font-size: 14px;
+    vertical-align: middle;
+}
+
+.admin-customers-table th {
+    background-color: #fff5f7;
+    color: #800020;
+    font-weight: 600;
+}
+
+.admin-customers-table td {
+    color: #555555;
+    line-height: 1.6;
+    overflow-wrap: anywhere;
+}
+
+.admin-customers-table tbody tr:hover {
+    background-color: #fff9fa;
+}
+
+/* Empty Customer Message */
+.admin-customers-empty {
+    text-align: center;
+    padding: 25px;
+    color: #777777;
+    font-size: 14px;
+}
+
+/* Mobile Responsive */
+@media (max-width: 700px) {
+    .admin-customers-header h1 {
+        font-size: 25px;
+    }
+
+    .admin-customers-section {
+        padding: 20px;
+    }
+
+    .admin-customers-section h2 {
+        font-size: 20px;
+    }
+}
+
+
+/* NINORA Admin - Professional UI */
+
+/* Content Sections */
+.admin-products-section,
+.admin-orders-section,
+.admin-customers-section {
+    background: #ffffff;
+    border: 1px solid #eee5e1;
+    border-radius: 16px;
+    padding: 30px;
+    box-shadow: 0 6px 25px rgba(60, 40, 35, 0.05);
+}
+
+/* Tables */
+.admin-products-table,
+.admin-orders-table,
+.admin-customers-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.admin-products-table th,
+.admin-orders-table th,
+.admin-customers-table th {
+    background: #f5eeeb;
+    color: #57413b;
+    padding: 16px;
+    font-size: 13px;
+    font-weight: 600;
+    text-align: left;
+}
+
+.admin-products-table td,
+.admin-orders-table td,
+.admin-customers-table td {
+    padding: 16px;
+    border-bottom: 1px solid #f0e9e6;
+    color: #625854;
+    font-size: 14px;
+}
+
+.admin-products-table tbody tr:hover,
+.admin-orders-table tbody tr:hover,
+.admin-customers-table tbody tr:hover {
+    background: #fdf8f6;
+}
+
+/* Forms */
+.admin-dashboard-main input,
+.admin-dashboard-main select,
+.admin-dashboard-main textarea {
+    border: 1px solid #e4d8d3;
+    border-radius: 8px;
+    padding: 11px 13px;
+    font-family: inherit;
+    font-size: 14px;
+}
+
+.admin-dashboard-main input:focus,
+.admin-dashboard-main select:focus,
+.admin-dashboard-main textarea:focus {
+    outline: none;
+    border-color: #a47c74;
+    box-shadow: 0 0 0 3px rgba(164, 124, 116, 0.12);
+}
+
+/* Buttons */
+.admin-dashboard-main button {
+    border-radius: 8px;
+    transition: background 0.2s, transform 0.2s;
+}
+
+.admin-dashboard-main button:hover {
+    transform: translateY(-1px);
+}
+
+/* Responsive */
+@media (max-width: 700px) {
+    .admin-products-section,
+    .admin-orders-section,
+    .admin-customers-section {
+        padding: 18px;
+    }
+}
+
+/* Footer Layout */
+.footer-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 30px;
+    padding: 20px 0 30px;
+}
+
+.footer-brand {
+    text-align: left;
+}
+
+.footer-brand h2 {
+    font-family: Georgia, serif;
+    font-size: 28px;
+    letter-spacing: 4px;
+    color: #292524;
+    margin-bottom: 8px;
+}
+
+.footer-brand p {
+    font-size: 13px;
+    color: #756a65;
+}
+
+.footer-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 25px;
+}
+
+.footer-links a {
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.footer-bottom {
+    border-top: 1px solid #d8c5bf;
+    padding-top: 20px;
+    font-size: 12px;
+    color: #756a65;
+}
+
+/* Mobile Responsive */
+@media (max-width: 600px) {
+    .footer-content {
+        flex-direction: column;
+        text-align: center;
+        gap: 25px;
+    }
+
+    .footer-brand {
+        text-align: center;
+    }
+
+    .footer-links {
+        justify-content: center;
+        gap: 15px 22px;
     }
 }

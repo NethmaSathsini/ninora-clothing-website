@@ -38,9 +38,7 @@ if (registerForm) {
 }
 
 
-/* ==============================
-   Login Form Validation
-============================== */
+/*Login Form Validation*/
 
 const loginForm = document.getElementById("loginForm");
 
@@ -66,16 +64,17 @@ if (loginForm) {
 }
 
 
-/*Product Search and Filtering*/
+
+/* Product Search and Filtering */
 
 const productSearch = document.getElementById("productSearch");
 const categorySelect = document.getElementById("categorySelect");
 
 if (productSearch && categorySelect) {
 
-    const productCards = document.querySelectorAll(".product-card");
-
     function filterProducts() {
+
+        const productCards = document.querySelectorAll(".product-card");
 
         const searchText = productSearch.value.toLowerCase().trim();
         const selectedCategory = categorySelect.value;
@@ -83,6 +82,7 @@ if (productSearch && categorySelect) {
         productCards.forEach(function (card) {
 
             const productName = card.querySelector("h3").textContent.toLowerCase();
+
             const productCategory = card.dataset.category;
 
             const matchesSearch = productName.includes(searchText);
@@ -101,13 +101,16 @@ if (productSearch && categorySelect) {
     }
 
     productSearch.addEventListener("input", filterProducts);
+
     categorySelect.addEventListener("change", filterProducts);
+
+    // Allows newly added products to be filtered
+    window.filterNinoraProducts = filterProducts;
 }
 
 
-/* ==============================
-   Dynamic Product Details
-============================== */
+
+/*Dynamic Product Details*/
 
 const products = [
     {
@@ -140,14 +143,51 @@ const products = [
     }
 ];
 
-// Get product ID from the URL
-const urlParams = new URLSearchParams(window.location.search);
-const productId = Number(urlParams.get("id"));
 
-// Find the selected product
-const selectedProduct = products.find(function(product) {
-    return product.id === productId;
-});
+/* Get selected product from URL */
+
+const urlParams = new URLSearchParams(window.location.search);
+
+const productId = urlParams.get("id");
+const adminProductIndex = urlParams.get("adminProduct");
+
+let selectedProduct = null;
+
+// Existing customer shop products
+if (productId !== null) {
+
+    selectedProduct = products.find(function (product) {
+        return product.id === Number(productId);
+    }) || null;
+
+}
+
+// Products added by admin
+else if (adminProductIndex !== null) {
+
+    const adminProducts = getAdminProducts();
+
+    const index = Number(adminProductIndex);
+
+    if (
+        Number.isInteger(index) &&
+        index >= 0 &&
+        index < adminProducts.length
+    ) {
+
+        const adminProduct = adminProducts[index];
+
+        selectedProduct = {
+            id: "admin-" + index,
+            name: adminProduct.name,
+            price: Number(adminProduct.price),
+            image: adminProduct.image,
+            description: adminProduct.description ||
+                "Explore this stylish clothing item from Ninora."
+        };
+    }
+}
+
 
 // Get HTML elements
 const detailImage = document.getElementById("detailImage");
@@ -175,9 +215,7 @@ if (detailImage && selectedProduct) {
 }
 
 
-/* ==============================
-   Add to Cart Functionality
-============================== */
+/*Add to Cart Functionality*/
 
 const addToCartBtn = document.getElementById("addToCartBtn");
 
@@ -231,9 +269,7 @@ if (addToCartBtn) {
 }
 
 
-/* ==============================
-   Shopping Cart Functionality
-============================== */
+/*Shopping Cart Functionality*/
 
 const cartItemsContainer = document.getElementById("cartItems");
 
@@ -370,9 +406,7 @@ if (cartItemsContainer) {
 }
 
 
-/* ==============================
-   Checkout Order Summary
-============================== */
+/*Checkout Order Summary*/
 
 const checkoutItemsContainer = document.getElementById("checkoutItems");
 
@@ -509,9 +543,7 @@ if (checkoutForm) {
 }
 
 
-/* ==============================
-   Order Confirmation Functionality
-============================== */
+/*Order Confirmation Functionality*/
 
 const confirmOrderId = document.getElementById("confirmOrderId");
 
@@ -563,9 +595,7 @@ function displayOrderConfirmation() {
 }
 
 
-/* ==============================
-   My Orders Page Functionality
-============================== */
+/*My Orders Page Functionality*/
 
 const ordersList = document.getElementById("ordersList");
 
@@ -674,9 +704,7 @@ function displayMyOrders() {
 }
 
 
-/* ==============================
-   Admin Product Form Open / Close
-============================== */
+/*Admin Product Form Open / Close*/
 
 const addProductBtn = document.getElementById("addProductBtn");
 const cancelProductBtn = document.getElementById("cancelProductBtn");
@@ -718,9 +746,7 @@ if (cancelProductBtn && productFormSection && adminProductForm) {
 }
 
 
-/* ===================================
-   Admin Product Management
-=================================== */
+/*Admin Product Management*/
 
 // Get saved admin products
 function getAdminProducts() {
@@ -954,9 +980,7 @@ function deleteAdminProduct(productId) {
 displayAdminProducts();
 
 
-/* ======================================
-   Admin Manage Orders Functionality
-====================================== */
+/*Admin Manage Orders Functionality*/
 
 // Get customer orders from localStorage
 function getAdminOrders() {
@@ -1248,3 +1272,173 @@ if (closeOrderDetailsBtn) {
 
 // Load customer orders when admin page opens
 displayAdminOrders();
+
+
+/*Admin Customer Details Functionality*/
+
+function displayAdminCustomers() {
+
+    const tableBody = document.getElementById(
+        "adminCustomersTableBody"
+    );
+
+    // Run only on Admin Customer Details Page
+    if (!tableBody) return;
+
+    let orders = [];
+
+    // Get customer orders
+    try {
+        const savedOrders = JSON.parse(
+            localStorage.getItem("ninoraOrders") || "[]"
+        );
+
+        if (Array.isArray(savedOrders)) {
+            orders = savedOrders;
+        }
+
+    } catch (error) {
+        console.error("Error loading customer details:", error);
+    }
+
+    // Clear existing table rows
+    tableBody.innerHTML = "";
+
+    // Show message if no orders exist
+    if (orders.length === 0) {
+
+        const row = document.createElement("tr");
+        const cell = document.createElement("td");
+
+        cell.colSpan = 5;
+        cell.className = "admin-customers-empty";
+        cell.textContent = "No customer details found.";
+
+        row.appendChild(cell);
+        tableBody.appendChild(row);
+
+        return;
+    }
+
+    // Display newest orders first
+    orders.slice().reverse().forEach(function (order) {
+
+        const row = document.createElement("tr");
+
+        let orderDate = "N/A";
+
+        if (order.orderDate) {
+            const date = new Date(order.orderDate);
+
+            if (!isNaN(date.getTime())) {
+                orderDate = date.toLocaleDateString("en-GB");
+            }
+        }
+
+        const customerDetails = [
+            order.customerName || "N/A",
+            order.customerPhone || "N/A",
+            order.deliveryAddress || "N/A",
+            order.orderId || "N/A",
+            orderDate
+        ];
+
+        customerDetails.forEach(function (value) {
+
+            const cell = document.createElement("td");
+
+            // Safely display customer information
+            cell.textContent = value;
+
+            row.appendChild(cell);
+        });
+
+        tableBody.appendChild(row);
+    });
+}
+
+// Load customer details when page opens
+displayAdminCustomers();
+
+
+/*Display Admin Products on Shop Page*/
+
+function displayAdminProductsOnShop() {
+
+    const productsGrid = document.getElementById("productsGrid");
+
+    // Run only on Customer Products Page
+    if (!productsGrid) return;
+
+    let adminProducts = [];
+
+    try {
+        adminProducts = getAdminProducts();
+
+        if (!Array.isArray(adminProducts)) {
+            adminProducts = [];
+        }
+
+    } catch (error) {
+        console.error("Error loading admin products:", error);
+        return;
+    }
+
+    adminProducts.forEach(function (product, index) {
+
+        const productCard = document.createElement("article");
+        productCard.className = "product-card";
+
+        // Normalize category for filtering
+        const category = String(product.category || "")
+            .toLowerCase()
+            .replace(/[\s-]/g, "");
+
+        productCard.dataset.category = category;
+
+        // Product image
+        const productImage = document.createElement("img");
+        productImage.src = product.image || "images/placeholder.jpg";
+        productImage.alt = product.name || "Clothing Product";
+
+        // Product name
+        const productName = document.createElement("h3");
+        productName.textContent = product.name || "Unnamed Product";
+
+        // Product price
+        const productPrice = document.createElement("p");
+        productPrice.className = "product-price";
+
+        const price = Number(product.price);
+
+        productPrice.textContent = Number.isFinite(price)
+            ? "Rs. " + price.toLocaleString("en-LK")
+            : "Price unavailable";
+
+        // View Details link
+        const detailsLink = document.createElement("a");
+        detailsLink.className = "view-product-btn";
+        detailsLink.textContent = "View Details";
+
+        // Temporary admin product identifier
+        detailsLink.href = "product-details.html?adminProduct=" + index;
+
+        // Add elements to product card
+        productCard.appendChild(productImage);
+        productCard.appendChild(productName);
+        productCard.appendChild(productPrice);
+        productCard.appendChild(detailsLink);
+
+        // Add card to products grid
+        productsGrid.appendChild(productCard);
+
+    });
+
+    // Apply current search and category filter
+    if (typeof window.filterNinoraProducts === "function") {
+        window.filterNinoraProducts();
+    }
+}
+
+// Display admin products when Shop Page opens
+displayAdminProductsOnShop();

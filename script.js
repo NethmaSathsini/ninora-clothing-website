@@ -853,93 +853,96 @@ function displayAdminProducts() {
     });
 }
 
-// Add or update product
+
+ // Add or update product
 const productManagementForm = document.getElementById(
     "adminProductForm"
 );
 
 if (productManagementForm) {
-    productManagementForm.addEventListener(
-        "submit",
-        function (event) {
-            event.preventDefault();
+    productManagementForm.addEventListener("submit", function (event) {
+        event.preventDefault();
 
-            const idField = document.getElementById(
-                "editProductId"
+        const idField = document.getElementById("editProductId");
+
+        const name = document.getElementById("productName").value.trim();
+
+        const price = Number(
+            document.getElementById("productPrice").value
+        );
+
+        const category = document.getElementById("productCategory").value;
+
+        const image = document.getElementById("productImage").value.trim();
+
+        const description = document.getElementById(
+            "productDescription"
+        ).value.trim();
+
+        // Validate product details
+        if (
+            !name ||
+            !Number.isFinite(price) ||
+            price <= 0 ||
+            !category ||
+            !image ||
+            !description
+        ) {
+            alert("Please enter valid product details.");
+            return;
+        }
+
+        const products = getAdminProducts();
+        const editingId = idField.value;
+
+        if (editingId) {
+            // Update existing product
+            const product = products.find(
+                item => String(item.id) === editingId
             );
 
-            const name = document.getElementById(
-                "productName"
-            ).value.trim();
-
-            const price = Number(
-                document.getElementById("productPrice").value
-            );
-
-            const category = document.getElementById(
-                "productCategory"
-            ).value;
-
-            const image = document.getElementById(
-                "productImage"
-            ).value.trim();
-
-            if (
-                !name ||
-                !Number.isFinite(price) ||
-                price <= 0 ||
-                !category ||
-                !image
-            ) {
-                alert("Please enter valid product details.");
+            if (!product) {
+                alert("Product not found.");
                 return;
             }
 
-            const products = getAdminProducts();
-            const editingId = idField.value;
+            product.name = name;
+            product.price = price;
+            product.category = category;
+            product.image = image;
+            product.description = description;
 
-            if (editingId) {
-                const product = products.find(
-                    item => String(item.id) === editingId
-                );
+            alert("Product updated successfully!");
 
-                if (!product) {
-                    alert("Product not found.");
-                    return;
-                }
+        } else {
+            // Add new product
+            const newProduct = {
+                id: "admin-" + Date.now() + "-" +
+                    Math.random().toString(36).slice(2, 8),
+                name: name,
+                price: price,
+                category: category,
+                image: image,
+                description: description
+            };
 
-                product.name = name;
-                product.price = price;
-                product.category = category;
-                product.image = image;
+            products.push(newProduct);
 
-                alert("Product updated successfully!");
-            } else {
-                const newProduct = {
-                    id: "admin-" + Date.now() + "-" +
-                        Math.random().toString(36).slice(2, 8),
-                    name: name,
-                    price: price,
-                    category: category,
-                    image: image
-                };
-
-                products.push(newProduct);
-
-                alert("Product added successfully!");
-            }
-
-            saveAdminProducts(products);
-            displayAdminProducts();
-
-            productManagementForm.reset();
-            idField.value = "";
-
-            document.getElementById(
-                "productFormSection"
-            ).hidden = true;
+            alert("Product added successfully!");
         }
-    );
+
+        // Save products to localStorage
+        saveAdminProducts(products);
+        displayAdminProducts();
+
+        // Reset form
+        productManagementForm.reset();
+        idField.value = "";
+
+        document.getElementById(
+            "productFormSection"
+        ).hidden = true;
+    });
 }
 
 // Edit product
@@ -964,6 +967,9 @@ function editAdminProduct(productId) {
 
     document.getElementById("productImage").value =
         product.image;
+
+    document.getElementById("productDescription").value =
+        product.description || "";
 
     document.getElementById("productFormTitle").textContent =
         "Edit Product";

@@ -52,10 +52,34 @@ a {
     color: #a65c77;
 }
 
+/* Mobile Navbar */
+@media (max-width: 768px) {
+    .navbar {
+        flex-direction: column;
+        align-items: center;
+        gap: 15px;
+        padding: 18px 4%;
+    }
 
-/* =====================================
-   NINORA - Professional Customer Navbar
-===================================== */
+    .logo {
+        text-align: center;
+    }
+
+    .nav-links {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 14px 8px;
+        width: 100%;
+        text-align: center;
+    }
+
+    .nav-links a {
+        font-size: 12px;
+        white-space: nowrap;
+    }
+}
+
+/*NINORA - Professional Customer Navbar*/
 
 header.navbar {
     width: 100%;
@@ -3382,5 +3406,50 @@ header.navbar .nav-links a.active {
     .footer-links {
         justify-content: center;
         gap: 15px 22px;
+    }
+}
+
+/* Mobile Hero Section */
+@media (max-width: 768px) {
+    .hero {
+        flex-direction: column;
+        gap: 20px;
+        padding: 25px 5%;
+    }
+
+    .hero-image {
+        width: 100%;
+        min-height: 0;
+        height: auto;
+    }
+
+    .hero-image img {
+        display: block;
+        width: 100%;
+        height: auto;
+        object-fit: contain;
+    }
+
+    .hero-content {
+        width: 100%;
+        text-align: center;
+    }
+}
+/* Fix Ninora Hero Image on Mobile */
+@media (max-width: 768px) {
+    .ninora-hero-image {
+        width: 100%;
+        height: auto;
+        min-height: 0;
+        overflow: visible;
+    }
+
+    .ninora-hero-image img {
+        display: block;
+        width: 100%;
+        height: auto;
+        max-height: none;
+        object-fit: contain;
+        object-position: center;
     }
 }

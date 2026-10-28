@@ -12,6 +12,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
 
+
 /* Registration Form Validation */
 
 const registerForm = document.getElementById("registerForm");
@@ -33,7 +34,11 @@ if (registerForm) {
             return;
         }
 
-        alert("Registration form validated successfully!");
+        // Frontend validation completed
+        alert("Registration form validated successfully! Redirecting to login.");
+
+        // Redirect to login page
+        window.location.href = "login.html";
     });
 }
 

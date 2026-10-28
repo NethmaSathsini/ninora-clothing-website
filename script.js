@@ -781,7 +781,8 @@ function saveAdminProducts(products) {
     );
 }
 
-// Display products in admin table
+
+ // Display products in admin table
 function displayAdminProducts() {
     const tableBody = document.getElementById(
         "adminProductsTableBody"
@@ -795,8 +796,10 @@ function displayAdminProducts() {
     if (products.length === 0) {
         const row = document.createElement("tr");
         const cell = document.createElement("td");
-        cell.colSpan = 5;
+
+        cell.colSpan = 6;
         cell.textContent = "No products added yet.";
+
         row.appendChild(cell);
         tableBody.appendChild(row);
         return;
@@ -805,28 +808,41 @@ function displayAdminProducts() {
     products.forEach(function (product) {
         const row = document.createElement("tr");
 
+        // Product image
         const imageCell = document.createElement("td");
         const image = document.createElement("img");
+
         image.src = product.image;
         image.alt = product.name;
         image.className = "admin-product-table-image";
+
         imageCell.appendChild(image);
 
+        // Product name
         const nameCell = document.createElement("td");
         nameCell.textContent = product.name;
 
+        // Category
         const categoryCell = document.createElement("td");
         categoryCell.textContent = product.category;
 
+        // Price
         const priceCell = document.createElement("td");
         priceCell.textContent = Number(product.price).toFixed(2);
 
+        // Description
+        const descriptionCell = document.createElement("td");
+        descriptionCell.textContent =
+            product.description || "No description";
+
+        // Actions
         const actionsCell = document.createElement("td");
 
         const editBtn = document.createElement("button");
         editBtn.type = "button";
         editBtn.className = "admin-edit-btn";
         editBtn.textContent = "Edit";
+
         editBtn.addEventListener("click", function () {
             editAdminProduct(product.id);
         });
@@ -835,6 +851,7 @@ function displayAdminProducts() {
         deleteBtn.type = "button";
         deleteBtn.className = "admin-delete-btn";
         deleteBtn.textContent = "Delete";
+
         deleteBtn.addEventListener("click", function () {
             deleteAdminProduct(product.id);
         });
@@ -846,13 +863,13 @@ function displayAdminProducts() {
             nameCell,
             categoryCell,
             priceCell,
+            descriptionCell,
             actionsCell
         );
 
         tableBody.appendChild(row);
     });
 }
-
 
  // Add or update product
 const productManagementForm = document.getElementById(

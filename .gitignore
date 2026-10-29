@@ -1,0 +1,5 @@
+# Local database configuration
+db.php
+
+# Temporary test files
+test-*.php

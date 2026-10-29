@@ -11,60 +11,53 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 
-
-
 /* Registration Form Validation */
 
 const registerForm = document.getElementById("registerForm");
 
 if (registerForm) {
     registerForm.addEventListener("submit", function (event) {
-        event.preventDefault();
-
         const password = document.getElementById("password").value;
         const confirmPassword = document.getElementById("confirmPassword").value;
 
         if (password.length < 8) {
+            event.preventDefault();
             alert("Password must contain at least 8 characters.");
             return;
         }
 
         if (password !== confirmPassword) {
+            event.preventDefault();
             alert("Passwords do not match.");
             return;
         }
 
-        // Frontend validation completed
-        alert("Registration form validated successfully! Redirecting to login.");
-
-        // Redirect to login page
-        window.location.href = "login.html";
+        // Valid form submits to register.php
     });
 }
 
-
-/*Login Form Validation*/
+/* Login Form Validation */
 
 const loginForm = document.getElementById("loginForm");
 
 if (loginForm) {
     loginForm.addEventListener("submit", function (event) {
-        event.preventDefault();
 
         const email = document.getElementById("loginEmail").value.trim();
         const password = document.getElementById("loginPassword").value;
 
         if (email === "" || password === "") {
+            event.preventDefault();
             alert("Please fill in all fields.");
             return;
         }
 
         if (password.length < 8) {
+            event.preventDefault();
             alert("Please enter a valid password.");
             return;
         }
 
-        alert("Login form validated successfully!");
     });
 }
 
@@ -1488,3 +1481,33 @@ function displayAdminProductsOnShop() {
 
 // Display admin products when Shop Page opens
 displayAdminProductsOnShop();
+
+// Show Login or Logout based on customer session
+async function updateCustomerNavbar() {
+    const loginLink = document.getElementById("customerLoginLink");
+    const logoutLink = document.getElementById("customerLogoutLink");
+
+    if (!loginLink || !logoutLink) return;
+
+    try {
+        const response = await fetch("session-status.php", {
+            cache: "no-store"
+        });
+
+        if (!response.ok) {
+            throw new Error("Session check failed");
+        }
+
+        const data = await response.json();
+
+        loginLink.hidden = data.loggedIn;
+        logoutLink.hidden = !data.loggedIn;
+
+    } catch (error) {
+        console.error("Unable to check customer session:", error);
+        loginLink.hidden = false;
+        logoutLink.hidden = true;
+    }
+}
+
+document.addEventListener("DOMContentLoaded", updateCustomerNavbar);

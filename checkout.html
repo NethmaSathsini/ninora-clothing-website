@@ -2,6 +2,27 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <script>
+(async function () {
+    try {
+        const response = await fetch("session-status.php", {
+            cache: "no-store"
+        });
+
+        if (!response.ok) {
+            throw new Error("Session check failed");
+        }
+
+        const data = await response.json();
+
+        if (!data.loggedIn) {
+            window.location.replace("login.html?redirect=checkout.html");
+        }
+    } catch (error) {
+        window.location.replace("login.html?redirect=checkout.html");
+    }
+})();
+</script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
@@ -21,7 +42,8 @@
         <a href="products.html">Shop</a>
         <a href="products.html">Categories</a>
         <a href="my-orders.html">My Orders</a>
-        <a href="login.html">Login</a>
+        <a href="login.html" id="customerLoginLink">Login</a>
+<a href="logout.php" id="customerLogoutLink" hidden>Logout</a>
         <a href="cart.html">Cart</a>
     </nav>
 </header>

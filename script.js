@@ -36,6 +36,17 @@ if (registerForm) {
     });
 }
 
+// Set checkout redirect after login
+const loginRedirectInput = document.getElementById("loginRedirect");
+
+if (loginRedirectInput) {
+    const params = new URLSearchParams(window.location.search);
+
+    if (params.get("redirect") === "checkout.html") {
+        loginRedirectInput.value = "checkout.html";
+    }
+}
+
 /* Login Form Validation */
 
 const loginForm = document.getElementById("loginForm");
@@ -1511,3 +1522,40 @@ async function updateCustomerNavbar() {
 }
 
 document.addEventListener("DOMContentLoaded", updateCustomerNavbar);
+
+// Check customer login before checkout
+const checkoutLoginBtn = document.getElementById("checkoutBtn");
+
+if (checkoutLoginBtn) {
+    checkoutLoginBtn.addEventListener("click", async function (event) {
+        event.preventDefault();
+
+        // Keep checkout disabled when the cart is empty
+        const cart = JSON.parse(localStorage.getItem("ninoraCart") || "[]");
+
+        if (cart.length === 0) {
+            return;
+        }
+
+        try {
+            const response = await fetch("session-status.php", {
+                cache: "no-store"
+            });
+
+            if (!response.ok) {
+                throw new Error("Session check failed");
+            }
+
+            const data = await response.json();
+
+            if (data.loggedIn) {
+                window.location.href = "checkout.html";
+            } else {
+                window.location.href = "login.html?redirect=checkout.html";
+            }
+        } catch (error) {
+            console.error("Checkout login check failed:", error);
+            alert("Unable to continue checkout. Please try again.");
+        }
+    });
+}

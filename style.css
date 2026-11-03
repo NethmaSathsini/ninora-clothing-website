@@ -2471,6 +2471,7 @@ header.navbar .nav-links a.active {
 }
 
 .admin-sidebar-footer a {
+    display: block;
     color: #a47c74;
     text-decoration: none;
     font-size: 13px;

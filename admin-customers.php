@@ -1,4 +1,11 @@
+<?php
+session_start();
 
+if (!isset($_SESSION["admin_id"])) {
+    header("Location: admin-login.html");
+    exit;
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -23,19 +30,19 @@
 
             <nav class="admin-sidebar-nav">
 
-                <a href="admin-dashboard.html">
+                <a href="admin-dashboard.php">
                     Dashboard
                 </a>
 
-                <a href="admin-products.html">
+                <a href="admin-products.php">
                     Manage Products
                 </a>
 
-                <a href="admin-orders.html">
+                <a href="admin-orders.php">
                     Manage Orders
                 </a>
 
-                <a href="admin-customers.html" class="active">
+                <a href="admin-customers.php" class="active">
                     Customer Details
                 </a>
 
@@ -43,6 +50,7 @@
 
             <div class="admin-sidebar-footer">
                 <a href="index.html">Back to Website</a>
+                <a href="admin-logout.php">Logout</a>
             </div>
 
         </aside>

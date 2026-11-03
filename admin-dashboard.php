@@ -29,25 +29,26 @@ if (!isset($_SESSION["admin_id"])) {
             </div>
 
             <nav class="admin-sidebar-nav">
-                <a href="admin-dashboard.html" class="active">
+                <a href="admin-dashboard.php" class="active">
                     Dashboard
                 </a>
 
-                <a href="admin-products.html">
+                <a href="admin-products.php">
                     Manage Products
                 </a>
 
-                <a href="admin-orders.html">
+                <a href="admin-orders.php">
                     Manage Orders
                 </a>
 
-                <a href="admin-customers.html">
+                <a href="admin-customers.php">
                     Customer Details
                 </a>
             </nav>
 
             <div class="admin-sidebar-footer">
                 <a href="index.html">Back to Website</a>
+                <a href="admin-logout.php">Logout</a>
             </div>
 
         </aside>
@@ -68,7 +69,7 @@ if (!isset($_SESSION["admin_id"])) {
                 <div class="admin-dashboard-card">
                     <h3>Manage Products</h3>
                     <p>Add, edit, and remove clothing products.</p>
-                    <a href="admin-products.html">
+                    <a href="admin-products.php">
                         View Products
                     </a>
                 </div>
@@ -76,7 +77,7 @@ if (!isset($_SESSION["admin_id"])) {
                 <div class="admin-dashboard-card">
                     <h3>Manage Orders</h3>
                     <p>View customer orders and update order status.</p>
-                    <a href="admin-orders.html">
+                    <a href="admin-orders.php">
                         View Orders
                     </a>
                 </div>
@@ -84,7 +85,7 @@ if (!isset($_SESSION["admin_id"])) {
                 <div class="admin-dashboard-card">
                     <h3>Customer Details</h3>
                     <p>View customer information related to orders.</p>
-                    <a href="admin-customers.html">
+                    <a href="admin-customers.php">
                         View Customers
                     </a>
                 </div>

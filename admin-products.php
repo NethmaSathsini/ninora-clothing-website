@@ -23,19 +23,19 @@
 
             <nav class="admin-sidebar-nav">
 
-                <a href="admin-dashboard.html">
+                <a href="admin-dashboard.php">
                     Dashboard
                 </a>
 
-                <a href="admin-products.html" class="active">
+                <a href="admin-products.php" class="active">
                     Manage Products
                 </a>
 
-                <a href="admin-orders.html">
+                <a href="admin-orders.php">
                     Manage Orders
                 </a>
 
-                <a href="admin-customers.html">
+                <a href="admin-customers.php">
                     Customer Details
                 </a>
 
@@ -43,6 +43,7 @@
 
             <div class="admin-sidebar-footer">
                 <a href="index.html">Back to Website</a>
+                <a href="admin-logout.php">Logout</a>
             </div>
 
         </aside>

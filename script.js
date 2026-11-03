@@ -42,9 +42,11 @@ const loginRedirectInput = document.getElementById("loginRedirect");
 if (loginRedirectInput) {
     const params = new URLSearchParams(window.location.search);
 
-    if (params.get("redirect") === "checkout.html") {
-        loginRedirectInput.value = "checkout.html";
-    }
+    const redirectPage = params.get("redirect");
+
+if (["checkout.html", "my-orders.html"].includes(redirectPage)) {
+    loginRedirectInput.value = redirectPage;
+}
 }
 
 /* Login Form Validation */

@@ -40,10 +40,10 @@ try {
     $_SESSION["customer_email"] = $customer["email"];
 
     // Redirect after successful login
-    $redirect = $_POST["redirect"] ?? "";
+$redirect = $_POST["redirect"] ?? "";
 
-if ($redirect === "checkout.html") {
-    header("Location: checkout.html");
+if (in_array($redirect, ["checkout.html", "my-orders.html"], true)) {
+    header("Location: " . $redirect);
 } else {
     header("Location: index.html");
 }

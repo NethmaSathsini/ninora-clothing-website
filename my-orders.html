@@ -2,6 +2,27 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <script>
+(async function () {
+    try {
+        const response = await fetch("session-status.php", {
+            cache: "no-store"
+        });
+
+        if (!response.ok) {
+            throw new Error("Session check failed");
+        }
+
+        const data = await response.json();
+
+        if (!data.loggedIn) {
+            window.location.replace("login.html?redirect=my-orders.html");
+        }
+    } catch (error) {
+        window.location.replace("login.html?redirect=my-orders.html");
+    }
+})();
+</script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 

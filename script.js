@@ -179,6 +179,7 @@ const urlParams = new URLSearchParams(window.location.search);
 
 const productId = urlParams.get("id");
 const adminProductIndex = urlParams.get("adminProduct");
+const mysqlProductId = urlParams.get("productId");
 
 let selectedProduct = null;
 
@@ -217,6 +218,75 @@ else if (adminProductIndex !== null) {
     }
 }
 
+// Load selected MySQL product
+async function loadMySQLProductDetails() {
+    if (mysqlProductId === null) return;
+
+    try {
+        const response = await fetch("get-products.php");
+
+        if (!response.ok) {
+            throw new Error("Failed to load products.");
+        }
+
+        const result = await response.json();
+
+        if (!result.success || !Array.isArray(result.products)) {
+            throw new Error("Invalid product response.");
+        }
+
+        const product = result.products.find(function (item) {
+            return String(item.product_id) === mysqlProductId;
+        });
+
+        if (!product) {
+            alert("Product not found.");
+            return;
+        }
+
+        selectedProduct = {
+            id: "db-" + product.product_id,
+            name: product.product_name,
+            price: Number(product.price),
+            image: product.image,
+            description: product.description ||
+                "Explore this stylish clothing item from Ninora."
+        };
+
+        const cartButton = document.getElementById("addToCartBtn");
+
+        if (cartButton) {
+            cartButton.disabled = false;
+        }
+
+        // Update product details on the page
+        const detailImage = document.getElementById("detailImage");
+        const detailName = document.getElementById("detailName");
+        const detailPrice = document.getElementById("detailPrice");
+        const detailDescription = document.getElementById("detailDescription");
+
+        if (detailImage && detailName && detailPrice && detailDescription) {
+            detailImage.style.display = "";
+            detailImage.src = selectedProduct.image;
+            detailImage.alt = selectedProduct.name;
+
+            detailName.textContent = selectedProduct.name;
+
+            detailPrice.textContent =
+                "Rs. " + selectedProduct.price.toLocaleString("en-LK");
+
+            detailDescription.textContent = selectedProduct.description;
+        }
+
+    } catch (error) {
+        console.error("Error loading MySQL product:", error);
+        alert("Unable to load product details.");
+    }
+}
+
+if (mysqlProductId !== null) {
+    loadMySQLProductDetails();
+}
 
 // Get HTML elements
 const detailImage = document.getElementById("detailImage");
@@ -247,6 +317,11 @@ if (detailImage && selectedProduct) {
 /*Add to Cart Functionality*/
 
 const addToCartBtn = document.getElementById("addToCartBtn");
+
+// Disable Add to Cart while MySQL product is loading
+if (addToCartBtn && mysqlProductId !== null) {
+    addToCartBtn.disabled = true;
+}
 
 if (addToCartBtn) {
     addToCartBtn.addEventListener("click", function () {
@@ -1520,7 +1595,7 @@ displayAdminCustomers();
 
 /*Display Admin Products on Shop Page*/
 
-function displayAdminProductsOnShop() {
+async function displayAdminProductsOnShop() {
 
     const productsGrid = document.getElementById("productsGrid");
 
@@ -1530,7 +1605,28 @@ function displayAdminProductsOnShop() {
     let adminProducts = [];
 
     try {
-        adminProducts = getAdminProducts();
+        const response = await fetch("get-products.php");
+
+if (!response.ok) {
+    throw new Error("Failed to load products.");
+}
+
+const result = await response.json();
+
+if (!result.success || !Array.isArray(result.products)) {
+    throw new Error("Invalid product response.");
+}
+
+adminProducts = result.products.map(function (product) {
+    return {
+        id: product.product_id,
+        name: product.product_name,
+        price: product.price,
+        category: product.category,
+        image: product.image,
+        description: product.description
+    };
+});
 
         if (!Array.isArray(adminProducts)) {
             adminProducts = [];
@@ -1578,7 +1674,8 @@ function displayAdminProductsOnShop() {
         detailsLink.textContent = "View Details";
 
         // Temporary admin product identifier
-        detailsLink.href = "product-details.html?adminProduct=" + index;
+        detailsLink.href = "product-details.html?productId=" +
+    encodeURIComponent(product.id);
 
         // Add elements to product card
         productCard.appendChild(productImage);

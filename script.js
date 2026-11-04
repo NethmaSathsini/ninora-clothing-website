@@ -503,9 +503,7 @@ function displayCheckoutSummary() {
 }
 
 
-/* ==============================
-   Place Order Functionality
-============================== */
+/*Place Order Functionality*/
 
 const checkoutForm = document.getElementById("checkoutForm");
 
@@ -794,14 +792,53 @@ function saveAdminProducts(products) {
 
 
  // Display products in admin table
-function displayAdminProducts() {
+ async function displayAdminProducts() {
     const tableBody = document.getElementById(
         "adminProductsTableBody"
     );
 
     if (!tableBody) return;
 
-    const products = getAdminProducts();
+    let products = [];
+
+try {
+    const response = await fetch("get-products.php");
+
+    if (!response.ok) {
+        throw new Error("Failed to load products.");
+    }
+
+    const result = await response.json();
+
+    if (!result.success || !Array.isArray(result.products)) {
+        throw new Error("Invalid product response.");
+    }
+
+    products = result.products.map(function (product) {
+        return {
+            id: product.product_id,
+            name: product.product_name,
+            category: product.category,
+            description: product.description,
+            price: product.price,
+            image: product.image
+        };
+    });
+
+} catch (error) {
+    console.error("Error loading products:", error);
+    tableBody.innerHTML = "";
+
+    const row = document.createElement("tr");
+    const cell = document.createElement("td");
+
+    cell.colSpan = 6;
+    cell.textContent = "Unable to load products.";
+
+    row.appendChild(cell);
+    tableBody.appendChild(row);
+    return;
+}
     tableBody.innerHTML = "";
 
     if (products.length === 0) {
@@ -888,10 +925,12 @@ const productManagementForm = document.getElementById(
 );
 
 if (productManagementForm) {
-    productManagementForm.addEventListener("submit", function (event) {
+    productManagementForm.addEventListener("submit", async function (event) {
         event.preventDefault();
 
         const idField = document.getElementById("editProductId");
+
+        const editingId = idField.value;
 
         const name = document.getElementById("productName").value.trim();
 
@@ -921,47 +960,74 @@ if (productManagementForm) {
         }
 
         const products = getAdminProducts();
-        const editingId = idField.value;
-
         if (editingId) {
-            // Update existing product
-            const product = products.find(
-                item => String(item.id) === editingId
-            );
+    // Update existing product in MySQL
+    const formData = new FormData();
 
-            if (!product) {
-                alert("Product not found.");
-                return;
-            }
+    formData.append("productId", editingId);
+    formData.append("productName", name);
+    formData.append("productPrice", price);
+    formData.append("productCategory", category);
+    formData.append("productImage", image);
+    formData.append("productDescription", description);
 
-            product.name = name;
-            product.price = price;
-            product.category = category;
-            product.image = image;
-            product.description = description;
+    try {
+        const response = await fetch("update-product.php", {
+            method: "POST",
+            body: formData
+        });
 
-            alert("Product updated successfully!");
+        const result = await response.json();
 
-        } else {
-            // Add new product
-            const newProduct = {
-                id: "admin-" + Date.now() + "-" +
-                    Math.random().toString(36).slice(2, 8),
-                name: name,
-                price: price,
-                category: category,
-                image: image,
-                description: description
-            };
-
-            products.push(newProduct);
-
-            alert("Product added successfully!");
+        if (!response.ok || !result.success) {
+            alert(result.message || "Unable to update product.");
+            return;
         }
 
-        // Save products to localStorage
-        saveAdminProducts(products);
-        displayAdminProducts();
+        alert("Product updated successfully!");
+
+    } catch (error) {
+        console.error("Error updating product:", error);
+        alert("Unable to connect to the server.");
+        return;
+    }
+
+} else {
+
+    // Add new product to MySQL
+
+    const formData = new FormData();
+
+    formData.append("productName", name);
+    formData.append("productPrice", price);
+    formData.append("productCategory", category);
+    formData.append("productImage", image);
+    formData.append("productDescription", description);
+
+    try {
+        const response = await fetch("add-product.php", {
+            method: "POST",
+            body: formData
+        });
+
+        const result = await response.json();
+
+        if (!response.ok || !result.success) {
+            alert(result.message || "Unable to add product.");
+            return;
+        }
+
+        alert("Product added successfully!");
+
+    } catch (error) {
+        alert("Unable to connect to the server.");
+        return;
+    }
+}
+
+        // Update localStorage only when editing an existing product
+        // Refresh admin table after adding or updating a product
+        await displayAdminProducts();
 
         // Reset form
         productManagementForm.reset();
@@ -974,58 +1040,97 @@ if (productManagementForm) {
 }
 
 // Edit product
-function editAdminProduct(productId) {
-    const product = getAdminProducts().find(
-        item => item.id === productId
-    );
+async function editAdminProduct(productId) {
+    try {
+        const response = await fetch("get-products.php");
 
-    if (!product) return;
+        if (!response.ok) {
+            throw new Error("Failed to load products.");
+        }
 
-    document.getElementById("editProductId").value =
-        product.id;
+        const result = await response.json();
 
-    document.getElementById("productName").value =
-        product.name;
+        if (!result.success || !Array.isArray(result.products)) {
+            throw new Error("Invalid product response.");
+        }
 
-    document.getElementById("productPrice").value =
-        product.price;
+        const product = result.products.find(
+            item => Number(item.product_id) === Number(productId)
+        );
 
-    document.getElementById("productCategory").value =
-        product.category;
+        if (!product) {
+            alert("Product not found.");
+            return;
+        }
 
-    document.getElementById("productImage").value =
-        product.image;
+        document.getElementById("editProductId").value =
+            product.product_id;
 
-    document.getElementById("productDescription").value =
-        product.description || "";
+        document.getElementById("productName").value =
+            product.product_name;
 
-    document.getElementById("productFormTitle").textContent =
-        "Edit Product";
+        document.getElementById("productPrice").value =
+            product.price;
 
-    const formSection = document.getElementById(
-        "productFormSection"
-    );
+        document.getElementById("productCategory").value =
+            product.category;
 
-    formSection.hidden = false;
-    formSection.scrollIntoView({ behavior: "smooth" });
+        document.getElementById("productImage").value =
+            product.image || "";
+
+        document.getElementById("productDescription").value =
+            product.description || "";
+
+        document.getElementById("productFormTitle").textContent =
+            "Edit Product";
+
+        const formSection = document.getElementById(
+            "productFormSection"
+        );
+
+        formSection.hidden = false;
+        formSection.scrollIntoView({ behavior: "smooth" });
+
+    } catch (error) {
+        console.error("Error loading product:", error);
+        alert("Unable to load product details.");
+    }
 }
 
 // Delete product
-function deleteAdminProduct(productId) {
+// Delete product from MySQL
+async function deleteAdminProduct(productId) {
     const confirmed = confirm(
         "Are you sure you want to delete this product?"
     );
 
     if (!confirmed) return;
 
-    const products = getAdminProducts().filter(
-        item => item.id !== productId
-    );
+    const formData = new FormData();
+    formData.append("productId", productId);
 
-    saveAdminProducts(products);
-    displayAdminProducts();
+    try {
+        const response = await fetch("delete-product.php", {
+            method: "POST",
+            body: formData
+        });
 
-    alert("Product deleted successfully!");
+        const result = await response.json();
+
+        if (!response.ok || !result.success) {
+            alert(result.message || "Unable to delete product.");
+            return;
+        }
+
+        alert("Product deleted successfully!");
+
+        // Refresh admin products table
+        await displayAdminProducts();
+
+    } catch (error) {
+        console.error("Error deleting product:", error);
+        alert("Unable to connect to the server.");
+    }
 }
 
 // Load admin products when page opens

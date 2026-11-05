@@ -1305,88 +1305,123 @@ function formatAdminOrderDate(dateValue) {
     return date.toLocaleDateString("en-GB");
 }
 
-// Display customer orders in admin table
-function displayAdminOrders() {
-    const tableBody = document.getElementById(
-        "adminOrdersTableBody"
-    );
+let adminOrdersFromDB = [];
+
+// Display customer orders from MySQL
+async function displayAdminOrders() {
+    const tableBody = document.getElementById("adminOrdersTableBody");
 
     if (!tableBody) return;
 
-    const orders = getAdminOrders().reverse();
-
     tableBody.innerHTML = "";
 
-    if (orders.length === 0) {
+    try {
+        const response = await fetch("get-admin-orders.php");
+        const result = await response.json();
+
+        if (!response.ok || !result.success) {
+            throw new Error(result.message || "Unable to load orders.");
+        }
+
+        const orders = result.orders;
+
+        adminOrdersFromDB = orders;
+
+        if (orders.length === 0) {
+            const row = document.createElement("tr");
+            const cell = document.createElement("td");
+
+            cell.colSpan = 7;
+            cell.textContent = "No customer orders found.";
+
+            row.appendChild(cell);
+            tableBody.appendChild(row);
+            return;
+        }
+
+        orders.forEach(function (order) {
+            const row = document.createElement("tr");
+
+            function addCell(value) {
+                const cell = document.createElement("td");
+                cell.textContent = value;
+                row.appendChild(cell);
+            }
+
+            addCell("NIN" + String(order.order_id).padStart(4, "0"));
+            addCell(order.customer_name);
+            addCell(
+                new Date(order.order_date.replace(" ", "T"))
+                    .toLocaleDateString("en-GB")
+            );
+            addCell(Number(order.total).toFixed(2));
+            addCell(order.payment_method);
+
+            const statusCell = document.createElement("td");
+            const statusBadge = document.createElement("span");
+
+            const status = order.status || "Pending";
+
+            statusBadge.className =
+                "admin-order-status " + status.toLowerCase();
+
+            statusBadge.textContent = status;
+            statusCell.appendChild(statusBadge);
+            row.appendChild(statusCell);
+
+            const actionsCell = document.createElement("td");
+            const viewBtn = document.createElement("button");
+
+            viewBtn.type = "button";
+            viewBtn.className = "admin-view-order-btn";
+            viewBtn.textContent = "View Details";
+
+            viewBtn.addEventListener("click", function () {
+                viewAdminOrderDetails(order.order_id);
+            });
+
+            actionsCell.appendChild(viewBtn);
+            row.appendChild(actionsCell);
+
+            tableBody.appendChild(row);
+        });
+
+    } catch (error) {
+        console.error("Error loading admin orders:", error);
+
         const row = document.createElement("tr");
         const cell = document.createElement("td");
 
         cell.colSpan = 7;
-        cell.textContent = "No customer orders found.";
+        cell.textContent = "Unable to load customer orders.";
 
         row.appendChild(cell);
         tableBody.appendChild(row);
-        return;
     }
-
-    orders.forEach(function (order) {
-        const row = document.createElement("tr");
-
-        function addCell(value) {
-            const cell = document.createElement("td");
-            cell.textContent = value;
-            row.appendChild(cell);
-            return cell;
-        }
-
-        addCell(order.orderId);
-        addCell(order.customerName);
-        addCell(formatAdminOrderDate(order.orderDate));
-
-        addCell(
-            Number(order.total).toFixed(2)
-        );
-
-        addCell(order.paymentMethod);
-
-        // Order status
-        const statusCell = document.createElement("td");
-        const statusBadge = document.createElement("span");
-
-        const status = order.status || "Pending";
-
-        statusBadge.className =
-            "admin-order-status " + status.toLowerCase();
-
-        statusBadge.textContent = status;
-
-        statusCell.appendChild(statusBadge);
-        row.appendChild(statusCell);
-
-        // View Details button
-        const actionsCell = document.createElement("td");
-
-        const viewBtn = document.createElement("button");
-        viewBtn.type = "button";
-        viewBtn.className = "admin-view-order-btn";
-        viewBtn.textContent = "View Details";
-
-        viewBtn.addEventListener("click", function () {
-            viewAdminOrderDetails(order.orderId);
-        });
-
-        actionsCell.appendChild(viewBtn);
-        row.appendChild(actionsCell);
-
-        tableBody.appendChild(row);
-    });
 }
 
 // Display selected order details
 function viewAdminOrderDetails(orderId) {
-    const order = getAdminOrders().find(
-        item => item.orderId === orderId
-    );
+    const dbOrder = adminOrdersFromDB.find(
+    item => Number(item.order_id) === Number(orderId)
+);
+
+const order = dbOrder ? {
+    orderId: dbOrder.order_id,
+    customerName: dbOrder.customer_name,
+    customerPhone: dbOrder.customer_phone,
+    deliveryAddress: dbOrder.delivery_address,
+    orderDate: dbOrder.order_date,
+    paymentMethod: dbOrder.payment_method,
+    total: dbOrder.total,
+    status: dbOrder.status,
+    items: (dbOrder.items || []).map(item => ({
+        name: item.product_name,
+        size: item.size,
+        quantity: item.quantity,
+        price: item.price
+    }))
+} : null;
 
     if (!order) {
         alert("Order not found.");
@@ -1410,7 +1445,7 @@ function viewAdminOrderDetails(orderId) {
     info.className = "admin-order-info";
 
     const information = [
-        ["Order ID", order.orderId],
+        ["Order ID", "NIN" + String(order.orderId).padStart(4, "0")],
         ["Customer Name", order.customerName],
         ["Phone Number", order.customerPhone],
         ["Delivery Address", order.deliveryAddress],
@@ -1513,18 +1548,8 @@ function viewAdminOrderDetails(orderId) {
     });
 }
 
-// Update order status in localStorage
-function updateAdminOrderStatus(orderId, newStatus) {
-    const orders = getAdminOrders();
-
-    const order = orders.find(
-        item => item.orderId === orderId
-    );
-
-    if (!order) {
-        alert("Order not found.");
-        return;
-    }
+// Update order status in MySQL
+async function updateAdminOrderStatus(orderId, newStatus) {
 
     const allowedStatuses = [
         "Pending",
@@ -1539,14 +1564,50 @@ function updateAdminOrderStatus(orderId, newStatus) {
         return;
     }
 
-    order.status = newStatus;
+    try {
+        const response = await fetch("update-order-status.php", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                orderId: Number(orderId),
+                status: newStatus
+            })
+        });
 
-    saveAdminOrders(orders);
+        const result = await response.json();
 
-    displayAdminOrders();
-    viewAdminOrderDetails(orderId);
+        if (!response.ok || !result.success) {
+            throw new Error(
+                result.message || "Unable to update order status."
+            );
+        }
 
-    alert("Order status updated successfully!");
+        // Update stored order details
+        const order = adminOrdersFromDB.find(
+            item => Number(item.order_id) === Number(orderId)
+        );
+
+        if (order) {
+            order.status = newStatus;
+        }
+
+        // Refresh admin orders table
+        await displayAdminOrders();
+
+        // Refresh selected order details
+        viewAdminOrderDetails(orderId);
+
+        alert("Order status updated successfully!");
+
+    } catch (error) {
+        console.error("Order status update error:", error);
+
+        alert(
+            error.message || "Unable to update order status."
+        );
+    }
 }
 
 // Close order details section

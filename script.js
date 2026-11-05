@@ -90,6 +90,10 @@ let visibleProducts = 0;
         const searchText = productSearch.value.toLowerCase().trim();
         const selectedCategory = categorySelect.value;
 
+        console.log("Selected Category:", selectedCategory);
+        console.log("Search Text:", searchText);
+        console.log("Total Product Cards:", productCards.length);
+
         productCards.forEach(function (card) {
 
             const productName = card.querySelector("h3").textContent.toLowerCase();
@@ -578,15 +582,18 @@ function displayCheckoutSummary() {
 }
 
 
-/*Place Order Functionality*/
+/* Place Order Functionality */
 
 const checkoutForm = document.getElementById("checkoutForm");
 
 if (checkoutForm) {
-    checkoutForm.addEventListener("submit", function(event) {
+    let isSubmittingOrder = false;
+
+    checkoutForm.addEventListener("submit", async function(event) {
         event.preventDefault();
 
-        // Get cart products
+        if (isSubmittingOrder) return;
+
         const cart = JSON.parse(localStorage.getItem("ninoraCart")) || [];
 
         if (cart.length === 0) {
@@ -594,7 +601,6 @@ if (checkoutForm) {
             return;
         }
 
-        // Get customer details
         const customerName = document.getElementById("customerName").value.trim();
         const customerPhone = document.getElementById("customerPhone").value.trim();
         const deliveryAddress = document.getElementById("deliveryAddress").value.trim();
@@ -608,44 +614,64 @@ if (checkoutForm) {
             return;
         }
 
-        // Calculate order total
-        const total = cart.reduce((sum, item) => {
-            return sum + Number(item.price) * Number(item.quantity);
-        }, 0);
-
-        // Create order
-        const order = {
-            orderId: "NIN" + Date.now(),
+        const orderData = {
             customerName: customerName,
             customerPhone: customerPhone,
             deliveryAddress: deliveryAddress,
             paymentMethod: paymentMethod.value,
-            items: cart,
-            total: total,
-            status: "Pending",
-            orderDate: new Date().toISOString()
+            items: cart
         };
 
-        // Save order for frontend testing
-        const orders = JSON.parse(localStorage.getItem("ninoraOrders")) || [];
+        isSubmittingOrder = true;
 
-        orders.push(order);
+        const submitButton = checkoutForm.querySelector('[type="submit"]');
 
-        localStorage.setItem("ninoraOrders", JSON.stringify(orders));
+        if (submitButton) {
+            submitButton.disabled = true;
+        }
 
-        // Clear shopping cart
-        localStorage.removeItem("ninoraCart");
+        try {
+            const response = await fetch("save-order.php", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(orderData)
+            });
 
-        // Save latest order ID
-        localStorage.setItem("ninoraLatestOrderId", order.orderId);
+            const result = await response.json();
 
-        // Go to confirmation page
-        window.location.href = "order-confirmation.html";
+            if (!response.ok || !result.success) {
+                throw new Error(result.message || "Unable to place order.");
+            }
+
+            // Save latest database order ID
+            localStorage.setItem(
+                "ninoraLatestOrderId",
+                String(result.orderId)
+            );
+
+            // Clear cart only after successful database save
+            localStorage.removeItem("ninoraCart");
+
+            // Redirect to confirmation page
+            window.location.href = "order-confirmation.html";
+
+        } catch (error) {
+            console.error("Checkout error:", error);
+            alert(error.message || "Unable to place order. Please try again.");
+
+        } finally {
+            isSubmittingOrder = false;
+
+            if (submitButton) {
+                submitButton.disabled = false;
+            }
+        }
     });
 }
 
-
-/*Order Confirmation Functionality*/
+/* Order Confirmation Functionality */
 
 const confirmOrderId = document.getElementById("confirmOrderId");
 
@@ -653,49 +679,62 @@ if (confirmOrderId) {
     displayOrderConfirmation();
 }
 
-function displayOrderConfirmation() {
+async function displayOrderConfirmation() {
 
     const latestOrderId = localStorage.getItem("ninoraLatestOrderId");
 
-    const orders = JSON.parse(
-        localStorage.getItem("ninoraOrders")
-    ) || [];
-
-    // Find the latest order
-    const order = orders.find(
-        item => item.orderId === latestOrderId
-    );
-
-    if (!order) {
-        document.querySelector(".confirmation-card h1").textContent =
-            "Order Not Found";
-
-        document.querySelector(".confirmation-message").textContent =
-            "No order details are available.";
-
-        document.querySelector(".confirmation-icon").style.display = "none";
-        document.querySelector(".confirmation-details").style.display = "none";
-
+    if (!latestOrderId) {
+        showOrderConfirmationError();
         return;
     }
 
-    // Display order details
-    document.getElementById("confirmOrderId").textContent =
-        order.orderId;
+    try {
+        const response = await fetch(
+            "get-order.php?orderId=" + encodeURIComponent(latestOrderId)
+        );
 
-    document.getElementById("confirmOrderDate").textContent =
-        new Date(order.orderDate).toLocaleDateString("en-GB");
+        const result = await response.json();
 
-    document.getElementById("confirmPaymentMethod").textContent =
-        order.paymentMethod;
+        if (!response.ok || !result.success) {
+            throw new Error(result.message || "Order not found.");
+        }
 
-    document.getElementById("confirmOrderStatus").textContent =
-        order.status;
+        const order = result.order;
 
-    document.getElementById("confirmOrderTotal").textContent =
-        "Rs. " + Number(order.total).toLocaleString();
+        document.getElementById("confirmOrderId").textContent =
+    "NIN" + String(order.order_id).padStart(4, "0");
+
+    
+        document.getElementById("confirmOrderDate").textContent =
+            new Date(order.order_date.replace(" ", "T"))
+                .toLocaleDateString("en-GB");
+
+        document.getElementById("confirmPaymentMethod").textContent =
+            order.payment_method;
+
+        document.getElementById("confirmOrderStatus").textContent =
+            order.status;
+
+        document.getElementById("confirmOrderTotal").textContent =
+            "Rs. " + Number(order.total).toLocaleString("en-LK");
+
+    } catch (error) {
+        console.error("Order confirmation error:", error);
+        showOrderConfirmationError();
+    }
 }
 
+function showOrderConfirmationError() {
+
+    document.querySelector(".confirmation-card h1").textContent =
+        "Order Not Found";
+
+    document.querySelector(".confirmation-message").textContent =
+        "Unable to load order details.";
+
+    document.querySelector(".confirmation-icon").style.display = "none";
+    document.querySelector(".confirmation-details").style.display = "none";
+}
 
 /*My Orders Page Functionality*/
 
@@ -1636,6 +1675,9 @@ adminProducts = result.products.map(function (product) {
         console.error("Error loading admin products:", error);
         return;
     }
+
+    console.log("MySQL Products:", adminProducts);
+console.log("Total MySQL Products:", adminProducts.length);
 
     adminProducts.forEach(function (product, index) {
 

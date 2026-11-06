@@ -1505,24 +1505,35 @@ const order = dbOrder ? {
 
     const statusSelect = document.createElement("select");
 
-    const statuses = [
-        "Pending",
-        "Processing",
-        "Dispatched",
-        "Delivered",
-        "Cancelled"
-    ];
+    
+    // Allowed status changes based on current status
+    const allowedTransitions = {
+        Pending: ["Processing", "Cancelled"],
+        Processing: ["Dispatched", "Cancelled"],
+        Dispatched: ["Delivered"],
+        Delivered: [],
+        Cancelled: []
+    };
 
-    statuses.forEach(function (status) {
+    const currentStatus = order.status || "Pending";
+    const nextStatuses = allowedTransitions[currentStatus] || [];
+
+    // Show current status
+    const currentOption = document.createElement("option");
+    currentOption.value = currentStatus;
+    currentOption.textContent = currentStatus + " (Current)";
+    statusSelect.appendChild(currentOption);
+
+    // Show only allowed next statuses
+    nextStatuses.forEach(function (status) {
         const option = document.createElement("option");
-
         option.value = status;
         option.textContent = status;
-
         statusSelect.appendChild(option);
     });
 
-    statusSelect.value = order.status || "Pending";
+    statusSelect.value = currentStatus;
+
 
     const updateBtn = document.createElement("button");
     updateBtn.type = "button";
@@ -1537,6 +1548,22 @@ const order = dbOrder ? {
 
     updateSection.appendChild(label);
     updateSection.appendChild(statusSelect);
+    
+    // Disable updates for final statuses
+    if (nextStatuses.length === 0) {
+        statusSelect.disabled = true;
+        updateBtn.disabled = true;
+        updateBtn.textContent = "No Further Updates";
+    } else {
+        // Prevent submitting the unchanged status
+        updateBtn.disabled = true;
+
+        statusSelect.addEventListener("change", function () {
+            updateBtn.disabled =
+                statusSelect.value === currentStatus;
+        });
+    }
+
     updateSection.appendChild(updateBtn);
 
     detailsContent.appendChild(updateSection);

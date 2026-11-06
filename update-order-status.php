@@ -1,3 +1,4 @@
+
 <?php
 session_start();
 header("Content-Type: application/json");
@@ -24,22 +25,22 @@ require_once "db.php";
 
 $data = json_decode(file_get_contents("php://input"), true);
 
-$orderId = $data["orderId"] ?? null;
-$newStatus = $data["status"] ?? null;
+$orderId = is_array($data) ? ($data["orderId"] ?? null) : null;
+$newStatus = is_array($data) ? ($data["status"] ?? null) : null;
 
-$allowedStatuses = [
-    "Pending",
-    "Processing",
-    "Dispatched",
-    "Delivered",
-    "Cancelled"
+$allowedTransitions = [
+    "Pending" => ["Processing", "Cancelled"],
+    "Processing" => ["Dispatched", "Cancelled"],
+    "Dispatched" => ["Delivered"],
+    "Delivered" => [],
+    "Cancelled" => []
 ];
 
 if (
-    !is_array($data) ||
     !filter_var($orderId, FILTER_VALIDATE_INT) ||
     (int) $orderId < 1 ||
-    !in_array($newStatus, $allowedStatuses, true)
+    !is_string($newStatus) ||
+    !array_key_exists($newStatus, $allowedTransitions)
 ) {
     http_response_code(400);
     echo json_encode([
@@ -50,20 +51,20 @@ if (
 }
 
 try {
-    $stmt = $pdo->prepare(
-        "UPDATE orders SET status = ? WHERE order_id = ?"
-    );
+    // Start transaction to prevent conflicting updates
+    $pdo->beginTransaction();
 
-    $stmt->execute([$newStatus, $orderId]);
-
-    // Confirm the order exists
+    // Get current status and lock the order row
     $checkStmt = $pdo->prepare(
-        "SELECT order_id FROM orders WHERE order_id = ?"
+        "SELECT status FROM orders WHERE order_id = ? FOR UPDATE"
     );
 
-    $checkStmt->execute([$orderId]);
+    $checkStmt->execute([(int) $orderId]);
+    $order = $checkStmt->fetch(PDO::FETCH_ASSOC);
 
-    if (!$checkStmt->fetch(PDO::FETCH_ASSOC)) {
+    if (!$order) {
+        $pdo->rollBack();
+
         http_response_code(404);
         echo json_encode([
             "success" => false,
@@ -72,12 +73,48 @@ try {
         exit;
     }
 
+    $currentStatus = $order["status"];
+
+    // Validate the requested status transition
+    if (
+        !isset($allowedTransitions[$currentStatus]) ||
+        !in_array(
+            $newStatus,
+            $allowedTransitions[$currentStatus],
+            true
+        )
+    ) {
+        $pdo->rollBack();
+
+        http_response_code(400);
+        echo json_encode([
+            "success" => false,
+            "message" =>
+                "Cannot change order status from " .
+                $currentStatus . " to " . $newStatus . "."
+        ]);
+        exit;
+    }
+
+    // Update status only after validation
+    $stmt = $pdo->prepare(
+        "UPDATE orders SET status = ? WHERE order_id = ?"
+    );
+
+    $stmt->execute([$newStatus, (int) $orderId]);
+
+    $pdo->commit();
+
     echo json_encode([
         "success" => true,
         "message" => "Order status updated successfully."
     ]);
 
 } catch (Throwable $e) {
+    if ($pdo->inTransaction()) {
+        $pdo->rollBack();
+    }
+
     error_log($e->getMessage());
 
     http_response_code(500);

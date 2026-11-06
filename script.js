@@ -1656,86 +1656,95 @@ displayAdminOrders();
 
 /*Admin Customer Details Functionality*/
 
-function displayAdminCustomers() {
 
+/* Admin Customer Details Functionality */
+
+async function displayAdminCustomers() {
     const tableBody = document.getElementById(
         "adminCustomersTableBody"
     );
 
-    // Run only on Admin Customer Details Page
     if (!tableBody) return;
 
-    let orders = [];
-
-    // Get customer orders
-    try {
-        const savedOrders = JSON.parse(
-            localStorage.getItem("ninoraOrders") || "[]"
-        );
-
-        if (Array.isArray(savedOrders)) {
-            orders = savedOrders;
-        }
-
-    } catch (error) {
-        console.error("Error loading customer details:", error);
-    }
-
-    // Clear existing table rows
     tableBody.innerHTML = "";
 
-    // Show message if no orders exist
-    if (orders.length === 0) {
+    function showMessage(message) {
+        tableBody.innerHTML = "";
 
         const row = document.createElement("tr");
         const cell = document.createElement("td");
 
         cell.colSpan = 5;
         cell.className = "admin-customers-empty";
-        cell.textContent = "No customer details found.";
+        cell.textContent = message;
 
         row.appendChild(cell);
         tableBody.appendChild(row);
-
-        return;
     }
 
-    // Display newest orders first
-    orders.slice().reverse().forEach(function (order) {
+    showMessage("Loading customer details...");
 
-        const row = document.createElement("tr");
+    try {
+        const response = await fetch("get-admin-customers.php");
 
-        let orderDate = "N/A";
+        const result = await response.json();
 
-        if (order.orderDate) {
-            const date = new Date(order.orderDate);
-
-            if (!isNaN(date.getTime())) {
-                orderDate = date.toLocaleDateString("en-GB");
-            }
+        if (!response.ok || !result.success) {
+            throw new Error(
+                result.message || "Unable to load customer details."
+            );
         }
 
-        const customerDetails = [
-            order.customerName || "N/A",
-            order.customerPhone || "N/A",
-            order.deliveryAddress || "N/A",
-            order.orderId || "N/A",
-            orderDate
-        ];
+        const orders = result.customers;
 
-        customerDetails.forEach(function (value) {
+        if (!Array.isArray(orders) || orders.length === 0) {
+            showMessage("No customer details found.");
+            return;
+        }
 
-            const cell = document.createElement("td");
+        tableBody.innerHTML = "";
 
-            // Safely display customer information
-            cell.textContent = value;
+        orders.forEach(function (order) {
+            const row = document.createElement("tr");
 
-            row.appendChild(cell);
+            let orderDate = "N/A";
+
+            if (order.order_date) {
+                const date = new Date(
+                    order.order_date.replace(" ", "T")
+                );
+
+                if (!isNaN(date.getTime())) {
+                    orderDate = date.toLocaleDateString("en-GB");
+                }
+            }
+
+            const customerDetails = [
+                order.customer_name || "N/A",
+                order.customer_phone || "N/A",
+                order.delivery_address || "N/A",
+                "NIN" + String(order.order_id).padStart(4, "0"),
+                orderDate
+            ];
+
+            customerDetails.forEach(function (value) {
+                const cell = document.createElement("td");
+                cell.textContent = value;
+                row.appendChild(cell);
+            });
+
+            tableBody.appendChild(row);
         });
 
-        tableBody.appendChild(row);
-    });
+    } catch (error) {
+        console.error("Error loading customer details:", error);
+
+        showMessage(
+            error.message || "Unable to load customer details."
+        );
+    }
 }
+
 
 // Load customer details when page opens
 displayAdminCustomers();
